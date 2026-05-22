@@ -1,6 +1,11 @@
 // Localization
+interface LocalizeElement {
+  id: string;
+  key: string;
+}
+
 const localize = () => {
-  const elements = [
+  const elements: LocalizeElement[] = [
     { id: 'title', key: 'extName' },
     { id: 'label-color', key: 'labelColor' },
     { id: 'label-thickness', key: 'labelThickness' },
@@ -75,19 +80,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Auto ON logic
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url && hasAccess) {
-    const hostname = new URL(tab.url).hostname;
-    const data = await chrome.storage.local.get('autoOnSites');
-    const autoOnSites = data.autoOnSites || [];
-    if (autoOnSites.includes(hostname)) {
-      (document.getElementById('auto-on') as HTMLInputElement).checked = true;
-      // Trigger ON if not already ON (we can't easily check if it's ON without messaging, 
-      // but we can just call the ON logic)
-      document.getElementById('toggle-on')?.click();
+    try {
+      const hostname = new URL(tab.url).hostname;
+      const data = await chrome.storage.local.get('autoOnSites');
+      const autoOnSites: string[] = data.autoOnSites || [];
+      if (autoOnSites.includes(hostname)) {
+        const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+        if (autoOnEl) autoOnEl.checked = true;
+        document.getElementById('toggle-on')?.click();
+      }
+    } catch (e) {
+      // Ignore invalid URLs
     }
   }
 });
 
-const getSettings = () => {
+interface Settings {
+  color: string;
+  thickness: number;
+  opacity: number;
+  mode: string;
+  autoOn: boolean;
+}
+
+const getSettings = (): Settings => {
   return {
     color: (document.getElementById('color') as HTMLInputElement).value,
     thickness: parseInt((document.getElementById('thickness') as HTMLInputElement).value),
@@ -97,7 +113,7 @@ const getSettings = () => {
   };
 };
 
-const saveSettings = async () => {
+const saveSettings = async (): Promise<Settings> => {
   const settings = getSettings();
   const data = await chrome.storage.local.get('settings');
   await chrome.storage.local.set({ settings: { ...data.settings, ...settings } });
@@ -105,24 +121,32 @@ const saveSettings = async () => {
   // Handle autoOnSites
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url) {
-    const hostname = new URL(tab.url).hostname;
-    const storageData = await chrome.storage.local.get('autoOnSites');
-    let autoOnSites: string[] = storageData.autoOnSites || [];
-    if (settings.autoOn) {
-      if (!autoOnSites.includes(hostname)) autoOnSites.push(hostname);
-    } else {
-      autoOnSites = autoOnSites.filter(h => h !== hostname);
+    try {
+      const hostname = new URL(tab.url).hostname;
+      const storageData = await chrome.storage.local.get('autoOnSites');
+      let autoOnSites: string[] = storageData.autoOnSites || [];
+      if (settings.autoOn) {
+        if (!autoOnSites.includes(hostname)) autoOnSites.push(hostname);
+      } else {
+        autoOnSites = autoOnSites.filter(h => h !== hostname);
+      }
+      await chrome.storage.local.set({ autoOnSites });
+    } catch (e) {
+      // Ignore invalid URLs
     }
-    await chrome.storage.local.set({ autoOnSites });
   }
 
   return settings;
 };
 
-const updateContent = async (settings: any) => {
+const updateContent = async (settings: Partial<Settings>) => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.id) {
-    chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
+    try {
+      await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
+    } catch (e) {
+      // Content script might not be loaded yet
+    }
   }
 };
 
@@ -136,11 +160,14 @@ const updateContent = async (settings: any) => {
 // Color presets
 document.querySelectorAll('.preset-btn').forEach(btn => {
   btn.addEventListener('click', async (e) => {
-    const color = (e.target as HTMLButtonElement).dataset.color;
+    const color = (e.currentTarget as HTMLButtonElement).dataset.color;
     if (color) {
-      (document.getElementById('color') as HTMLInputElement).value = color;
-      const settings = await saveSettings();
-      await updateContent(settings);
+      const colorInput = document.getElementById('color') as HTMLInputElement | null;
+      if (colorInput) {
+        colorInput.value = color;
+        const settings = await saveSettings();
+        await updateContent(settings);
+      }
     }
   });
 });
@@ -161,33 +188,50 @@ document.getElementById('toggle-on')?.addEventListener('click', async () => {
     } catch (e) {
       // Might already be injected or restricted page
     }
-    chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
-    chrome.tabs.sendMessage(tab.id, { type: 'SHOW_LINE' });
+    try {
+      await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
+      await chrome.tabs.sendMessage(tab.id, { type: 'SHOW_LINE' });
+    } catch (e) {
+      // Handle error
+    }
   }
 });
 
 document.getElementById('toggle-off')?.addEventListener('click', async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.id) {
-    chrome.tabs.sendMessage(tab.id, { type: 'REMOVE_LINE' });
+    try {
+      await chrome.tabs.sendMessage(tab.id, { type: 'REMOVE_LINE' });
+    } catch (e) {
+      // Handle error
+    }
   }
 });
 
 // Load initial settings from storage
 chrome.storage.local.get(['settings', 'autoOnSites'], async (data) => {
   if (data.settings) {
-    (document.getElementById('color') as HTMLInputElement).value = data.settings.color;
-    (document.getElementById('thickness') as HTMLInputElement).value = data.settings.thickness;
-    (document.getElementById('opacity') as HTMLInputElement).value = data.settings.opacity;
+    const colorEl = document.getElementById('color') as HTMLInputElement | null;
+    if (colorEl) colorEl.value = data.settings.color;
+    const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
+    if (thicknessEl) thicknessEl.value = data.settings.thickness;
+    const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
+    if (opacityEl) opacityEl.value = data.settings.opacity;
     if (data.settings.mode) {
-      (document.getElementById('mode') as HTMLSelectElement).value = data.settings.mode;
+      const modeEl = document.getElementById('mode') as HTMLSelectElement | null;
+      if (modeEl) modeEl.value = data.settings.mode;
     }
   }
   
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url) {
-    const hostname = new URL(tab.url).hostname;
-    const autoOnSites = data.autoOnSites || [];
-    (document.getElementById('auto-on') as HTMLInputElement).checked = autoOnSites.includes(hostname);
+    try {
+      const hostname = new URL(tab.url).hostname;
+      const autoOnSites = data.autoOnSites || [];
+      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+      if (autoOnEl) autoOnEl.checked = autoOnSites.includes(hostname);
+    } catch (e) {
+      // Ignore invalid URLs
+    }
   }
 });

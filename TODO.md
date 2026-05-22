@@ -7,6 +7,6 @@
 - [x] T006: 起動時に storage.local から設定を復元し popup と content に反映
 - [x] T007: _locales ja/en を chrome.i18n で全UIに適用
 - [x] T008: Premiumゲート(trial_start_ts + Stripe Checkout URL)。無料は基本動作、Premiumで色プリセット追加・サイト別自動ON
-- [ ] T009: npm run build を通し ts/lint を解消
+- [x] T009: npm run build を通し ts/lint を解消
 - [ ] T010: release/eye-guide.zip 生成(node_modules除外)
 - [ ] T011: legal/PRIVACY.md と TERMS.md(外部通信なし・データ収集なし明記)

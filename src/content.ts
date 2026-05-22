@@ -1,6 +1,13 @@
 const LINE_ID = 'eye-guide-line';
 
-let currentSettings = {
+interface Settings {
+  color: string;
+  thickness: number;
+  opacity: number;
+  mode: string;
+}
+
+let currentSettings: Settings = {
   color: '#ffff00',
   thickness: 4,
   opacity: 0.5,
@@ -21,7 +28,7 @@ function hexToRgba(hex: string, opacity: number) {
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
 
-export function updateSettings(settings: Partial<typeof currentSettings>) {
+export function updateSettings(settings: Partial<Settings>) {
   currentSettings = { ...currentSettings, ...settings };
   const el = document.getElementById(LINE_ID);
   if (el) {
@@ -60,22 +67,19 @@ export function removeLine() {
   document.removeEventListener('mousemove', handleMouseMove);
 }
 
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.type === 'UPDATE_SETTINGS') {
-    updateSettings(message.settings);
-  } else if (message.type === 'SHOW_LINE') {
-    showLine();
-  } else if (message.type === 'REMOVE_LINE') {
-    removeLine();
-  }
-});
-
-// Load settings from storage on initialization
-chrome.storage.local.get('settings', (data) => {
-  if (data.settings) {
-    updateSettings(data.settings);
-  }
-});
+// Avoid duplicate listeners on multiple injections
+if (!(window as any).eyeGuideInjected) {
+  (window as any).eyeGuideInjected = true;
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'UPDATE_SETTINGS') {
+      updateSettings(message.settings);
+    } else if (message.type === 'SHOW_LINE') {
+      showLine();
+    } else if (message.type === 'REMOVE_LINE') {
+      removeLine();
+    }
+  });
+}
 
 (window as any).showLine = showLine;
 (window as any).removeLine = removeLine;
