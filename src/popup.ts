@@ -1,3 +1,28 @@
+// Localization
+const localize = () => {
+  const elements = [
+    { id: 'title', key: 'extName' },
+    { id: 'label-color', key: 'labelColor' },
+    { id: 'label-thickness', key: 'labelThickness' },
+    { id: 'label-opacity', key: 'labelOpacity' },
+    { id: 'label-mode', key: 'labelMode' },
+    { id: 'mode-horizontal', key: 'modeHorizontal' },
+    { id: 'mode-underline', key: 'modeUnderline' },
+    { id: 'mode-window', key: 'modeWindow' },
+    { id: 'toggle-on', key: 'btnOn' },
+    { id: 'toggle-off', key: 'btnOff' }
+  ];
+
+  elements.forEach(({ id, key }) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = chrome.i18n.getMessage(key);
+    }
+  });
+};
+
+document.addEventListener('DOMContentLoaded', localize);
+
 const getSettings = () => {
   return {
     color: (document.getElementById('color') as HTMLInputElement).value,

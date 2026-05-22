@@ -1,1 +1,13 @@
-{ "extName":{"message":"Reading Ruler"}, "extDesc":{"message":"Shows a reading guideline at your cursor to keep your place and reduce line-skipping."} }
+{
+  "extName": { "message": "Reading Ruler" },
+  "extDesc": { "message": "Shows a reading guideline at your cursor to keep your place and reduce line-skipping." },
+  "labelColor": { "message": "Color:" },
+  "labelThickness": { "message": "Thickness:" },
+  "labelOpacity": { "message": "Opacity:" },
+  "labelMode": { "message": "Mode:" },
+  "modeHorizontal": { "message": "Horizontal" },
+  "modeUnderline": { "message": "Underline" },
+  "modeWindow": { "message": "Focus Window" },
+  "btnOn": { "message": "ON" },
+  "btnOff": { "message": "OFF" }
+}

@@ -1,1 +1,13 @@
-{ "extName":{"message":"すーっと読める定規"}, "extDesc":{"message":"マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。"} }
+{
+  "extName": { "message": "すーっと読める定規" },
+  "extDesc": { "message": "マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。" },
+  "labelColor": { "message": "色:" },
+  "labelThickness": { "message": "太さ:" },
+  "labelOpacity": { "message": "不透明度:" },
+  "labelMode": { "message": "モード:" },
+  "modeHorizontal": { "message": "横帯" },
+  "modeUnderline": { "message": "下線" },
+  "modeWindow": { "message": "集中窓" },
+  "btnOn": { "message": "ON" },
+  "btnOff": { "message": "OFF" }
+}
