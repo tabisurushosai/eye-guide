@@ -1,10 +1,12 @@
-# eye-guide TODO
-- [ ] T001: src/content.ts にカーソル縦位置追従の読書ラインオーバーレイ(横帯/下線/集中窓)を実装、show/hide関数
-- [ ] T002: src/popup.ts に設定UI(ON/OFF・色・太さ・不透明度・モード)を実装しstorage.local保存
-- [ ] T003: popupのONで scripting.executeScript により現在タブへ注入、OFFで解除
-- [ ] T004: 起動時にstorage.localから設定復元しpopupに反映
-- [ ] T005: _locales ja/en を chrome.i18n で全UIに適用
-- [ ] T006: Premiumゲート(trial_start_ts+Stripe Checkout URL)。無料は基本動作、Premiumで色プリセット追加・サイト別自動ON
-- [ ] T007: npm run build を通しts/lint解消
-- [ ] T008: release/eye-guide.zip 生成(node_modules除外)
-- [ ] T009: legal/PRIVACY.md と TERMS.md(外部通信なし・データ収集なし明記)
+# eye-guide TODO (細粒度版)
+- [x] T001: src/content.ts に、画面に固定表示する半透明の横線を1本 document.body に追加する showLine() と、それを消す removeLine() を実装するだけ。npm run build が通ればコミット。
+- [ ] T002: mousemove で横線のY座標をカーソルに追従させる
+- [ ] T003: src/popup.ts に ON/OFF ボタンだけ作り、scripting.executeScript で showLine/removeLine を現在タブで呼ぶ
+- [ ] T004: 横線の色・太さ・不透明度のスライダーを popup に追加し chrome.storage.local に保存、content に反映
+- [ ] T005: モード切替(横帯/下線/集中窓)を追加
+- [ ] T006: 起動時に storage.local から設定を復元し popup と content に反映
+- [ ] T007: _locales ja/en を chrome.i18n で全UIに適用
+- [ ] T008: Premiumゲート(trial_start_ts + Stripe Checkout URL)。無料は基本動作、Premiumで色プリセット追加・サイト別自動ON
+- [ ] T009: npm run build を通し ts/lint を解消
+- [ ] T010: release/eye-guide.zip 生成(node_modules除外)
+- [ ] T011: legal/PRIVACY.md と TERMS.md(外部通信なし・データ収集なし明記)
