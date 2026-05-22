@@ -1,6 +1,6 @@
 # eye-guide TODO (細粒度版)
 - [x] T001: src/content.ts に、画面に固定表示する半透明の横線を1本 document.body に追加する showLine() と、それを消す removeLine() を実装するだけ。npm run build が通ればコミット。
-- [ ] T002: mousemove で横線のY座標をカーソルに追従させる
+- [x] T002: mousemove で横線のY座標をカーソルに追従させる
 - [ ] T003: src/popup.ts に ON/OFF ボタンだけ作り、scripting.executeScript で showLine/removeLine を現在タブで呼ぶ
 - [ ] T004: 横線の色・太さ・不透明度のスライダーを popup に追加し chrome.storage.local に保存、content に反映
 - [ ] T005: モード切替(横帯/下線/集中窓)を追加
