@@ -3,7 +3,8 @@ const LINE_ID = 'eye-guide-line';
 let currentSettings = {
   color: '#ffff00',
   thickness: 4,
-  opacity: 0.5
+  opacity: 0.5,
+  mode: 'horizontal'
 };
 
 const handleMouseMove = (e: MouseEvent) => {
@@ -25,7 +26,9 @@ export function updateSettings(settings: Partial<typeof currentSettings>) {
   const el = document.getElementById(LINE_ID);
   if (el) {
     el.style.height = `${currentSettings.thickness}px`;
-    el.style.backgroundColor = hexToRgba(currentSettings.color, currentSettings.opacity);
+    el.style.backgroundColor = currentSettings.mode === 'window' ? 'transparent' : hexToRgba(currentSettings.color, currentSettings.opacity);
+    el.style.boxShadow = currentSettings.mode === 'window' ? '0 0 0 100vmax rgba(0, 0, 0, 0.5)' : 'none';
+    el.style.transform = currentSettings.mode === 'underline' ? 'none' : 'translateY(-50%)';
   }
 }
 
@@ -40,14 +43,12 @@ export function showLine() {
   lineElement.style.position = 'fixed';
   lineElement.style.left = '0';
   lineElement.style.width = '100%';
-  lineElement.style.height = `${currentSettings.thickness}px`;
-  lineElement.style.backgroundColor = hexToRgba(currentSettings.color, currentSettings.opacity);
   lineElement.style.pointerEvents = 'none';
   lineElement.style.zIndex = '2147483647';
-  lineElement.style.transform = 'translateY(-50%)';
   lineElement.style.top = '50%';
 
   document.body.appendChild(lineElement);
+  updateSettings({}); // Apply initial styles via updateSettings
   document.addEventListener('mousemove', handleMouseMove);
 }
 

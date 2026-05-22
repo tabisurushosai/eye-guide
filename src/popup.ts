@@ -56,5 +56,8 @@ chrome.storage.local.get('settings', (data) => {
     (document.getElementById('color') as HTMLInputElement).value = data.settings.color;
     (document.getElementById('thickness') as HTMLInputElement).value = data.settings.thickness;
     (document.getElementById('opacity') as HTMLInputElement).value = data.settings.opacity;
+    if (data.settings.mode) {
+      (document.getElementById('mode') as HTMLSelectElement).value = data.settings.mode;
+    }
   }
 });
