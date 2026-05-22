@@ -2,7 +2,8 @@ const getSettings = () => {
   return {
     color: (document.getElementById('color') as HTMLInputElement).value,
     thickness: parseInt((document.getElementById('thickness') as HTMLInputElement).value),
-    opacity: parseFloat((document.getElementById('opacity') as HTMLInputElement).value)
+    opacity: parseFloat((document.getElementById('opacity') as HTMLInputElement).value),
+    mode: (document.getElementById('mode') as HTMLSelectElement).value
   };
 };
 
@@ -19,7 +20,7 @@ const updateContent = async (settings: any) => {
   }
 };
 
-['color', 'thickness', 'opacity'].forEach(id => {
+['color', 'thickness', 'opacity', 'mode'].forEach(id => {
   document.getElementById(id)?.addEventListener('input', async () => {
     const settings = await saveSettings();
     await updateContent(settings);

@@ -70,6 +70,13 @@ chrome.runtime.onMessage.addListener((message) => {
   }
 });
 
+// Load settings from storage on initialization
+chrome.storage.local.get('settings', (data) => {
+  if (data.settings) {
+    updateSettings(data.settings);
+  }
+});
+
 (window as any).showLine = showLine;
 (window as any).removeLine = removeLine;
 (window as any).updateSettings = updateSettings;

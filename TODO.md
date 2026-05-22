@@ -4,7 +4,7 @@
 - [x] T003: src/popup.ts に ON/OFF ボタンだけ作り、scripting.executeScript で showLine/removeLine を現在タブで呼ぶ
 - [x] T004: 横線の色・太さ・不透明度のスライダーを popup に追加し chrome.storage.local に保存、content に反映
 - [x] T005: モード切替(横帯/下線/集中窓)を追加
-- [ ] T006: 起動時に storage.local から設定を復元し popup と content に反映
+- [x] T006: 起動時に storage.local から設定を復元し popup と content に反映
 - [ ] T007: _locales ja/en を chrome.i18n で全UIに適用
 - [ ] T008: Premiumゲート(trial_start_ts + Stripe Checkout URL)。無料は基本動作、Premiumで色プリセット追加・サイト別自動ON
 - [ ] T009: npm run build を通し ts/lint を解消
