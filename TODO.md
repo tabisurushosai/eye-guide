@@ -2,7 +2,7 @@
 - [x] T001: src/content.ts に、画面に固定表示する半透明の横線を1本 document.body に追加する showLine() と、それを消す removeLine() を実装するだけ。npm run build が通ればコミット。
 - [x] T002: mousemove で横線のY座標をカーソルに追従させる
 - [x] T003: src/popup.ts に ON/OFF ボタンだけ作り、scripting.executeScript で showLine/removeLine を現在タブで呼ぶ
-- [ ] T004: 横線の色・太さ・不透明度のスライダーを popup に追加し chrome.storage.local に保存、content に反映
+- [x] T004: 横線の色・太さ・不透明度のスライダーを popup に追加し chrome.storage.local に保存、content に反映
 - [ ] T005: モード切替(横帯/下線/集中窓)を追加
 - [ ] T006: 起動時に storage.local から設定を復元し popup と content に反映
 - [ ] T007: _locales ja/en を chrome.i18n で全UIに適用
