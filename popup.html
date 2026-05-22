@@ -11,9 +11,19 @@
 <body>
   <h3 id="title"></h3>
   <div class="settings">
+    <div id="premium-status" style="font-size: 0.8em; margin-bottom: 8px; color: #666;"></div>
     <div class="setting-item">
       <label id="label-color">色:</label>
       <input type="color" id="color" value="#ffff00">
+    </div>
+    <div class="setting-item" id="presets-container">
+      <label id="label-presets">プリセット:</label>
+      <div class="presets">
+        <button class="preset-btn" data-color="#ffff00" style="background:#ffff00"></button>
+        <button class="preset-btn" data-color="#00ff00" style="background:#00ff00"></button>
+        <button class="preset-btn" data-color="#00ffff" style="background:#00ffff"></button>
+        <button class="preset-btn" data-color="#ff00ff" style="background:#ff00ff"></button>
+      </div>
     </div>
     <div class="setting-item">
       <label id="label-thickness">太さ:</label>
@@ -31,15 +41,25 @@
         <option id="mode-window" value="window">集中窓</option>
       </select>
     </div>
+    <div class="setting-item" id="auto-on-container">
+      <label id="label-auto-on">自動ON:</label>
+      <input type="checkbox" id="auto-on">
+    </div>
   </div>
   <div class="btn-group">
     <button id="toggle-on">ON</button>
     <button id="toggle-off">OFF</button>
   </div>
+  <div id="upgrade-container" style="margin-top: 12px; display: none;">
+    <button id="btn-upgrade" style="background: #ffd700; border: 1px solid #b8860b; font-weight: bold;"></button>
+  </div>
   <style>
     .settings { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     .setting-item { display: flex; justify-content: space-between; align-items: center; }
     input[type="range"] { width: 150px; }
+    .presets { display: flex; gap: 4px; }
+    .preset-btn { width: 20px; height: 20px; border: 1px solid #ccc; padding: 0; min-width: 20px; flex: none; }
+    .premium-lock { opacity: 0.5; pointer-events: none; }
   </style>
   <script type="module" src="src/popup.ts"></script>
 </body>

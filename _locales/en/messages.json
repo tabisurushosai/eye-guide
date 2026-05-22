@@ -9,5 +9,19 @@
   "modeUnderline": { "message": "Underline" },
   "modeWindow": { "message": "Focus Window" },
   "btnOn": { "message": "ON" },
-  "btnOff": { "message": "OFF" }
+  "btnOff": { "message": "OFF" },
+  "labelPresets": { "message": "Presets:" },
+  "labelAutoOn": { "message": "Auto ON:" },
+  "trialRemaining": {
+    "message": "$DAYS$ days left in trial",
+    "placeholders": {
+      "days": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "trialExpired": { "message": "Trial expired" },
+  "btnUpgrade": { "message": "Upgrade to Premium ($3)" },
+  "premiumStatus": { "message": "Premium Active" }
 }

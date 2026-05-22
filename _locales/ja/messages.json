@@ -9,5 +9,19 @@
   "modeUnderline": { "message": "下線" },
   "modeWindow": { "message": "集中窓" },
   "btnOn": { "message": "ON" },
-  "btnOff": { "message": "OFF" }
+  "btnOff": { "message": "OFF" },
+  "labelPresets": { "message": "プリセット:" },
+  "labelAutoOn": { "message": "自動ON:" },
+  "trialRemaining": {
+    "message": "無料トライアル残り $DAYS$ 日",
+    "placeholders": {
+      "days": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "trialExpired": { "message": "トライアル終了" },
+  "btnUpgrade": { "message": "Premiumを購入 ($3)" },
+  "premiumStatus": { "message": "Premium有効" }
 }
