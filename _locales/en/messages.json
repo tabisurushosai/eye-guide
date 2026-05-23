@@ -23,5 +23,10 @@
   },
   "trialExpired": { "message": "Trial expired" },
   "btnUpgrade": { "message": "Upgrade to Premium ($3)" },
-  "premiumStatus": { "message": "Premium Active" }
+  "premiumStatus": { "message": "Premium Active" },
+  "statusLoading": { "message": "Loading settings" },
+  "statusReady": { "message": "Settings loaded" },
+  "statusLineShown": { "message": "Reading line shown" },
+  "statusLineHidden": { "message": "Reading line hidden" },
+  "statusUnavailable": { "message": "This page may not allow changes" }
 }
