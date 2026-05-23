@@ -1,4 +1,5 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
+import { formatInteger, formatPercent, formatPixels, normalizeLocale } from './core/format';
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
 import { chromeStorage } from './storage/chromeStorage';
@@ -9,7 +10,11 @@ interface LocalizeElement {
   key: string;
 }
 
+const uiLocale = normalizeLocale(chrome.i18n.getUILanguage());
+
 const localize = () => {
+  document.documentElement.lang = uiLocale;
+
   const elements: LocalizeElement[] = [
     { id: 'title', key: 'extName' },
     { id: 'label-color', key: 'labelColor' },
@@ -65,7 +70,7 @@ const updateRangeReadouts = () => {
   const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
   const thicknessValueEl = document.getElementById('thickness-value');
   if (thicknessEl && thicknessValueEl) {
-    const thicknessText = `${thicknessEl.value}px`;
+    const thicknessText = formatPixels(Number.parseInt(thicknessEl.value, 10), uiLocale);
     thicknessValueEl.textContent = thicknessText;
     thicknessEl.setAttribute('aria-valuetext', thicknessText);
   }
@@ -73,7 +78,7 @@ const updateRangeReadouts = () => {
   const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
   const opacityValueEl = document.getElementById('opacity-value');
   if (opacityEl && opacityValueEl) {
-    const opacityText = `${Math.round(parseFloat(opacityEl.value) * 100)}%`;
+    const opacityText = formatPercent(Number.parseFloat(opacityEl.value), uiLocale);
     opacityValueEl.textContent = opacityText;
     opacityEl.setAttribute('aria-valuetext', opacityText);
   }
@@ -115,7 +120,8 @@ const checkPremium = async () => {
     setPremiumStatus(chrome.i18n.getMessage('premiumStatus'), 'success');
     if (upgradeContainer) upgradeContainer.style.display = 'none';
   } else if (premiumAccess.isTrialActive) {
-    setPremiumStatus(chrome.i18n.getMessage('trialRemaining', [premiumAccess.remainingDays.toString()]));
+    const trialMessageKey = premiumAccess.remainingDays === 1 ? 'trialRemainingOne' : 'trialRemainingMany';
+    setPremiumStatus(chrome.i18n.getMessage(trialMessageKey, [formatInteger(premiumAccess.remainingDays, uiLocale)]));
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   } else {
     setPremiumStatus(chrome.i18n.getMessage('trialExpired'), 'warning');
