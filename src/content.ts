@@ -1,18 +1,9 @@
+import { hexToRgba } from './core/color';
+import { normalizeSettings, type Settings } from './core/settings';
+
 const LINE_ID = 'eye-guide-line';
 
-interface Settings {
-  color: string;
-  thickness: number;
-  opacity: number;
-  mode: string;
-}
-
-let currentSettings: Settings = {
-  color: '#ffff00',
-  thickness: 4,
-  opacity: 0.5,
-  mode: 'horizontal'
-};
+let currentSettings: Settings = normalizeSettings();
 
 const handleMouseMove = (e: MouseEvent) => {
   const el = document.getElementById(LINE_ID);
@@ -20,13 +11,6 @@ const handleMouseMove = (e: MouseEvent) => {
     el.style.top = `${e.clientY}px`;
   }
 };
-
-function hexToRgba(hex: string, opacity: number) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-}
 
 export function updateSettings(settings: Partial<Settings>) {
   currentSettings = { ...currentSettings, ...settings };
