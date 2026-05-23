@@ -1,3 +1,8 @@
+import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
+import { getPremiumAccess } from './core/premium';
+import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
+import { chromeStorage } from './storage/chromeStorage';
+
 // Localization
 interface LocalizeElement {
   id: string;
@@ -98,35 +103,28 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
 };
 
 const checkPremium = async () => {
-  const data = await chrome.storage.local.get(['trial_start_ts', 'isPremium']);
-  let trialStart = data.trial_start_ts;
-  if (!trialStart) {
-    trialStart = Date.now();
-    await chrome.storage.local.set({ trial_start_ts: trialStart });
+  const data = await chromeStorage.get(['trial_start_ts', 'isPremium']);
+  const premiumAccess = getPremiumAccess(data.trial_start_ts, data.isPremium);
+  if (premiumAccess.shouldStoreTrialStart) {
+    await chromeStorage.set({ trial_start_ts: premiumAccess.trialStart });
   }
-
-  const isPremium = data.isPremium === true;
-  const daysPassed = Math.floor((Date.now() - trialStart) / (1000 * 60 * 60 * 24));
-  const remainingDays = Math.max(0, 7 - daysPassed);
-  const isTrialActive = remainingDays > 0;
-  const hasAccess = isPremium || isTrialActive;
 
   const upgradeContainer = document.getElementById('upgrade-container');
   
-  if (isPremium) {
+  if (premiumAccess.isPremium) {
     setPremiumStatus(chrome.i18n.getMessage('premiumStatus'), 'success');
     if (upgradeContainer) upgradeContainer.style.display = 'none';
-  } else if (isTrialActive) {
-    setPremiumStatus(chrome.i18n.getMessage('trialRemaining', [remainingDays.toString()]));
+  } else if (premiumAccess.isTrialActive) {
+    setPremiumStatus(chrome.i18n.getMessage('trialRemaining', [premiumAccess.remainingDays.toString()]));
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   } else {
     setPremiumStatus(chrome.i18n.getMessage('trialExpired'), 'warning');
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   }
 
-  setPremiumControlsAccess(hasAccess);
+  setPremiumControlsAccess(premiumAccess.hasAccess);
 
-  return hasAccess;
+  return premiumAccess.hasAccess;
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -140,59 +138,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Auto ON logic
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url && hasAccess) {
-    try {
-      const hostname = new URL(tab.url).hostname;
-      const data = await chrome.storage.local.get('autoOnSites');
-      const autoOnSites: string[] = data.autoOnSites || [];
-      if (autoOnSites.includes(hostname)) {
-        const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
-        if (autoOnEl) autoOnEl.checked = true;
-        document.getElementById('toggle-on')?.click();
-      }
-    } catch (e) {
-      // Ignore invalid URLs
+    const hostname = getHostnameFromUrl(tab.url);
+    const data = await chromeStorage.get('autoOnSites');
+    if (isAutoOnSite(data.autoOnSites ?? [], hostname)) {
+      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+      if (autoOnEl) autoOnEl.checked = true;
+      document.getElementById('toggle-on')?.click();
     }
   }
 });
-
-interface Settings {
-  color: string;
-  thickness: number;
-  opacity: number;
-  mode: string;
-  autoOn: boolean;
-}
 
 const getSettings = (): Settings => {
   return {
     color: (document.getElementById('color') as HTMLInputElement).value,
     thickness: parseInt((document.getElementById('thickness') as HTMLInputElement).value),
     opacity: parseFloat((document.getElementById('opacity') as HTMLInputElement).value),
-    mode: (document.getElementById('mode') as HTMLSelectElement).value,
+    mode: (document.getElementById('mode') as HTMLSelectElement).value as GuideMode,
     autoOn: (document.getElementById('auto-on') as HTMLInputElement).checked
   };
 };
 
 const saveSettings = async (): Promise<Settings> => {
   const settings = getSettings();
-  const data = await chrome.storage.local.get('settings');
-  await chrome.storage.local.set({ settings: { ...data.settings, ...settings } });
+  const data = await chromeStorage.get('settings');
+  await chromeStorage.set({ settings: mergeSettingsForStorage(data.settings, settings) });
 
   // Handle autoOnSites
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url) {
-    try {
-      const hostname = new URL(tab.url).hostname;
-      const storageData = await chrome.storage.local.get('autoOnSites');
-      let autoOnSites: string[] = storageData.autoOnSites || [];
-      if (settings.autoOn) {
-        if (!autoOnSites.includes(hostname)) autoOnSites.push(hostname);
-      } else {
-        autoOnSites = autoOnSites.filter(h => h !== hostname);
-      }
-      await chrome.storage.local.set({ autoOnSites });
-    } catch (e) {
-      // Ignore invalid URLs
+    const hostname = getHostnameFromUrl(tab.url);
+    if (hostname) {
+      const storageData = await chromeStorage.get('autoOnSites');
+      const autoOnSites = updateAutoOnSites(storageData.autoOnSites ?? [], hostname, settings.autoOn);
+      await chromeStorage.set({ autoOnSites });
     }
   }
 
@@ -211,14 +189,18 @@ const updateContent = async (settings: Partial<Settings>) => {
 };
 
 const loadInitialSettings = async () => {
-  const data = await chrome.storage.local.get(['settings', 'autoOnSites']);
+  const data = await chromeStorage.get(['settings', 'autoOnSites']);
   if (data.settings) {
     const colorEl = document.getElementById('color') as HTMLInputElement | null;
-    if (colorEl) colorEl.value = data.settings.color;
+    if (colorEl && data.settings.color) colorEl.value = data.settings.color;
     const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
-    if (thicknessEl) thicknessEl.value = data.settings.thickness;
+    if (thicknessEl && data.settings.thickness !== undefined) {
+      thicknessEl.value = String(data.settings.thickness);
+    }
     const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
-    if (opacityEl) opacityEl.value = data.settings.opacity;
+    if (opacityEl && data.settings.opacity !== undefined) {
+      opacityEl.value = String(data.settings.opacity);
+    }
     if (data.settings.mode) {
       const modeEl = document.getElementById('mode') as HTMLSelectElement | null;
       if (modeEl) modeEl.value = data.settings.mode;
@@ -228,14 +210,9 @@ const loadInitialSettings = async () => {
   
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.url) {
-    try {
-      const hostname = new URL(tab.url).hostname;
-      const autoOnSites = data.autoOnSites || [];
-      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
-      if (autoOnEl) autoOnEl.checked = autoOnSites.includes(hostname);
-    } catch (e) {
-      // Ignore invalid URLs
-    }
+    const hostname = getHostnameFromUrl(tab.url);
+    const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+    if (autoOnEl) autoOnEl.checked = isAutoOnSite(data.autoOnSites ?? [], hostname);
   }
 };
 
