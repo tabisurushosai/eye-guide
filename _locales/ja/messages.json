@@ -23,5 +23,10 @@
   },
   "trialExpired": { "message": "トライアル終了" },
   "btnUpgrade": { "message": "Premiumを購入 ($3)" },
-  "premiumStatus": { "message": "Premium有効" }
+  "premiumStatus": { "message": "Premium有効" },
+  "statusLoading": { "message": "設定を読み込んでいます" },
+  "statusReady": { "message": "設定を読み込みました" },
+  "statusLineShown": { "message": "読書ラインを表示しました" },
+  "statusLineHidden": { "message": "読書ラインを非表示にしました" },
+  "statusUnavailable": { "message": "このページでは操作できない場合があります" }
 }

@@ -31,6 +31,38 @@ const localize = () => {
 
 const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
+type StatusTone = 'info' | 'success' | 'warning';
+
+const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
+  const statusEl = document.getElementById('action-status');
+  if (!statusEl) return;
+
+  statusEl.textContent = chrome.i18n.getMessage(messageKey);
+  statusEl.dataset.tone = tone;
+};
+
+const setPremiumStatus = (message: string, state: StatusTone = 'info') => {
+  const statusEl = document.getElementById('premium-status');
+  if (!statusEl) return;
+
+  statusEl.textContent = message;
+  statusEl.dataset.state = state;
+};
+
+const updateRangeReadouts = () => {
+  const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
+  const thicknessValueEl = document.getElementById('thickness-value');
+  if (thicknessEl && thicknessValueEl) {
+    thicknessValueEl.textContent = `${thicknessEl.value}px`;
+  }
+
+  const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
+  const opacityValueEl = document.getElementById('opacity-value');
+  if (opacityEl && opacityValueEl) {
+    opacityValueEl.textContent = `${Math.round(parseFloat(opacityEl.value) * 100)}%`;
+  }
+};
+
 const checkPremium = async () => {
   const data = await chrome.storage.local.get(['trial_start_ts', 'isPremium']);
   let trialStart = data.trial_start_ts;
@@ -45,17 +77,16 @@ const checkPremium = async () => {
   const isTrialActive = remainingDays > 0;
   const hasAccess = isPremium || isTrialActive;
 
-  const statusEl = document.getElementById('premium-status');
   const upgradeContainer = document.getElementById('upgrade-container');
   
   if (isPremium) {
-    if (statusEl) statusEl.textContent = chrome.i18n.getMessage('premiumStatus');
+    setPremiumStatus(chrome.i18n.getMessage('premiumStatus'), 'success');
     if (upgradeContainer) upgradeContainer.style.display = 'none';
   } else if (isTrialActive) {
-    if (statusEl) statusEl.textContent = chrome.i18n.getMessage('trialRemaining', [remainingDays.toString()]);
+    setPremiumStatus(chrome.i18n.getMessage('trialRemaining', [remainingDays.toString()]));
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   } else {
-    if (statusEl) statusEl.textContent = chrome.i18n.getMessage('trialExpired');
+    setPremiumStatus(chrome.i18n.getMessage('trialExpired'), 'warning');
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   }
 
@@ -75,7 +106,11 @@ const checkPremium = async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   localize();
+  setActionStatus('statusLoading');
+  updateRangeReadouts();
+  await loadInitialSettings();
   const hasAccess = await checkPremium();
+  setActionStatus('statusReady');
 
   // Auto ON logic
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -150,8 +185,38 @@ const updateContent = async (settings: Partial<Settings>) => {
   }
 };
 
+const loadInitialSettings = async () => {
+  const data = await chrome.storage.local.get(['settings', 'autoOnSites']);
+  if (data.settings) {
+    const colorEl = document.getElementById('color') as HTMLInputElement | null;
+    if (colorEl) colorEl.value = data.settings.color;
+    const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
+    if (thicknessEl) thicknessEl.value = data.settings.thickness;
+    const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
+    if (opacityEl) opacityEl.value = data.settings.opacity;
+    if (data.settings.mode) {
+      const modeEl = document.getElementById('mode') as HTMLSelectElement | null;
+      if (modeEl) modeEl.value = data.settings.mode;
+    }
+  }
+  updateRangeReadouts();
+  
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tab?.url) {
+    try {
+      const hostname = new URL(tab.url).hostname;
+      const autoOnSites = data.autoOnSites || [];
+      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+      if (autoOnEl) autoOnEl.checked = autoOnSites.includes(hostname);
+    } catch (e) {
+      // Ignore invalid URLs
+    }
+  }
+};
+
 ['color', 'thickness', 'opacity', 'mode', 'auto-on'].forEach(id => {
   document.getElementById(id)?.addEventListener('input', async () => {
+    updateRangeReadouts();
     const settings = await saveSettings();
     await updateContent(settings);
   });
@@ -191,9 +256,12 @@ document.getElementById('toggle-on')?.addEventListener('click', async () => {
     try {
       await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
       await chrome.tabs.sendMessage(tab.id, { type: 'SHOW_LINE' });
+      setActionStatus('statusLineShown', 'success');
     } catch (e) {
-      // Handle error
+      setActionStatus('statusUnavailable', 'warning');
     }
+  } else {
+    setActionStatus('statusUnavailable', 'warning');
   }
 });
 
@@ -202,36 +270,11 @@ document.getElementById('toggle-off')?.addEventListener('click', async () => {
   if (tab?.id) {
     try {
       await chrome.tabs.sendMessage(tab.id, { type: 'REMOVE_LINE' });
+      setActionStatus('statusLineHidden', 'success');
     } catch (e) {
-      // Handle error
+      setActionStatus('statusUnavailable', 'warning');
     }
-  }
-});
-
-// Load initial settings from storage
-chrome.storage.local.get(['settings', 'autoOnSites'], async (data) => {
-  if (data.settings) {
-    const colorEl = document.getElementById('color') as HTMLInputElement | null;
-    if (colorEl) colorEl.value = data.settings.color;
-    const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
-    if (thicknessEl) thicknessEl.value = data.settings.thickness;
-    const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
-    if (opacityEl) opacityEl.value = data.settings.opacity;
-    if (data.settings.mode) {
-      const modeEl = document.getElementById('mode') as HTMLSelectElement | null;
-      if (modeEl) modeEl.value = data.settings.mode;
-    }
-  }
-  
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (tab?.url) {
-    try {
-      const hostname = new URL(tab.url).hostname;
-      const autoOnSites = data.autoOnSites || [];
-      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
-      if (autoOnEl) autoOnEl.checked = autoOnSites.includes(hostname);
-    } catch (e) {
-      // Ignore invalid URLs
-    }
+  } else {
+    setActionStatus('statusUnavailable', 'warning');
   }
 });
