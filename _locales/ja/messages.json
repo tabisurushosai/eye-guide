@@ -11,6 +11,10 @@
   "btnOn": { "message": "ON" },
   "btnOff": { "message": "OFF" },
   "labelPresets": { "message": "プリセット:" },
+  "presetYellow": { "message": "黄色のプリセット" },
+  "presetGreen": { "message": "緑のプリセット" },
+  "presetCyan": { "message": "シアンのプリセット" },
+  "presetMagenta": { "message": "マゼンタのプリセット" },
   "labelAutoOn": { "message": "自動ON:" },
   "trialRemaining": {
     "message": "無料トライアル残り $DAYS$ 日",

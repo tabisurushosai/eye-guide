@@ -18,7 +18,7 @@
       --success-text: #155f35;
       --warning-bg: #fff4d6;
       --warning-text: #7a5200;
-      --focus: #1f6feb;
+      --focus: #0b57d0;
     }
 
     * {
@@ -50,7 +50,7 @@
     }
 
     button {
-      min-height: 40px;
+      min-height: 44px;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--surface);
@@ -59,11 +59,17 @@
       font-weight: 700;
     }
 
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.62;
+    }
+
     button:focus-visible,
     input:focus-visible,
     select:focus-visible {
-      outline: 3px solid rgba(31, 111, 235, 0.28);
+      outline: 3px solid var(--focus);
       outline-offset: 2px;
+      box-shadow: 0 0 0 2px var(--surface);
     }
 
     .panel {
@@ -111,6 +117,7 @@
       grid-template-columns: minmax(92px, 1fr) minmax(0, 1.7fr);
       gap: 10px;
       align-items: center;
+      min-height: 44px;
     }
 
     .setting-item label {
@@ -121,7 +128,7 @@
 
     input[type="color"] {
       width: 100%;
-      min-height: 36px;
+      min-height: 44px;
       padding: 3px;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -130,7 +137,7 @@
 
     select {
       width: 100%;
-      min-height: 36px;
+      min-height: 44px;
       padding: 6px 9px;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -147,12 +154,14 @@
 
     input[type="range"] {
       width: 100%;
+      min-height: 44px;
+      margin: 0;
       accent-color: var(--primary);
     }
 
     output {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       font-variant-numeric: tabular-nums;
       text-align: right;
     }
@@ -162,8 +171,8 @@
     }
 
     input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       accent-color: var(--primary);
     }
 
@@ -176,8 +185,8 @@
     .preset-btn {
       min-width: 0;
       width: 100%;
-      height: 30px;
-      min-height: 30px;
+      height: 44px;
+      min-height: 44px;
       padding: 0;
       border: 1px solid rgba(23, 32, 51, 0.32);
       border-radius: 9px;
@@ -232,8 +241,7 @@
     }
 
     .premium-lock {
-      opacity: 0.48;
-      pointer-events: none;
+      opacity: 0.54;
     }
   </style>
 </head>
@@ -241,32 +249,32 @@
   <main class="panel">
     <h1 id="title"></h1>
     <section class="settings" aria-labelledby="title">
-      <div id="premium-status" class="status-card" aria-live="polite"></div>
+      <div id="premium-status" class="status-card" role="status" aria-live="polite" aria-atomic="true"></div>
       <div class="setting-item">
         <label id="label-color" for="color">色:</label>
         <input type="color" id="color" value="#ffff00">
       </div>
       <div class="setting-item" id="presets-container">
         <label id="label-presets">プリセット:</label>
-        <div class="presets">
-          <button class="preset-btn" type="button" data-color="#ffff00" style="background:#ffff00" aria-label="Yellow"></button>
-          <button class="preset-btn" type="button" data-color="#00ff00" style="background:#00ff00" aria-label="Green"></button>
-          <button class="preset-btn" type="button" data-color="#00ffff" style="background:#00ffff" aria-label="Cyan"></button>
-          <button class="preset-btn" type="button" data-color="#ff00ff" style="background:#ff00ff" aria-label="Magenta"></button>
+        <div class="presets" role="group" aria-labelledby="label-presets">
+          <button class="preset-btn" type="button" data-color="#ffff00" data-label-key="presetYellow" style="background:#ffff00" aria-label="黄色のプリセット"></button>
+          <button class="preset-btn" type="button" data-color="#00ff00" data-label-key="presetGreen" style="background:#00ff00" aria-label="緑のプリセット"></button>
+          <button class="preset-btn" type="button" data-color="#00ffff" data-label-key="presetCyan" style="background:#00ffff" aria-label="シアンのプリセット"></button>
+          <button class="preset-btn" type="button" data-color="#ff00ff" data-label-key="presetMagenta" style="background:#ff00ff" aria-label="マゼンタのプリセット"></button>
         </div>
       </div>
       <div class="setting-item">
         <label id="label-thickness" for="thickness">太さ:</label>
         <div class="range-control">
-          <input type="range" id="thickness" min="1" max="100" value="4">
-          <output id="thickness-value" for="thickness">4px</output>
+          <input type="range" id="thickness" min="1" max="100" value="4" aria-describedby="thickness-value">
+          <output id="thickness-value" for="thickness" aria-live="polite" aria-atomic="true">4px</output>
         </div>
       </div>
       <div class="setting-item">
         <label id="label-opacity" for="opacity">不透明度:</label>
         <div class="range-control">
-          <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="0.5">
-          <output id="opacity-value" for="opacity">50%</output>
+          <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="0.5" aria-describedby="opacity-value">
+          <output id="opacity-value" for="opacity" aria-live="polite" aria-atomic="true">50%</output>
         </div>
       </div>
       <div class="setting-item">
@@ -286,7 +294,7 @@
       <button class="primary-btn" id="toggle-on" type="button">ON</button>
       <button class="secondary-btn" id="toggle-off" type="button">OFF</button>
     </div>
-    <div id="action-status" class="action-status" aria-live="polite"></div>
+    <div id="action-status" class="action-status" role="status" aria-live="polite" aria-atomic="true"></div>
     <div id="upgrade-container" class="upgrade-container">
       <button id="btn-upgrade" class="upgrade-btn" type="button"></button>
     </div>

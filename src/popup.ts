@@ -27,6 +27,13 @@ const localize = () => {
       el.textContent = chrome.i18n.getMessage(key);
     }
   });
+
+  document.querySelectorAll<HTMLButtonElement>('.preset-btn[data-label-key]').forEach((button) => {
+    const labelKey = button.dataset.labelKey;
+    if (labelKey) {
+      button.setAttribute('aria-label', chrome.i18n.getMessage(labelKey));
+    }
+  });
 };
 
 const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
@@ -53,13 +60,40 @@ const updateRangeReadouts = () => {
   const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
   const thicknessValueEl = document.getElementById('thickness-value');
   if (thicknessEl && thicknessValueEl) {
-    thicknessValueEl.textContent = `${thicknessEl.value}px`;
+    const thicknessText = `${thicknessEl.value}px`;
+    thicknessValueEl.textContent = thicknessText;
+    thicknessEl.setAttribute('aria-valuetext', thicknessText);
   }
 
   const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
   const opacityValueEl = document.getElementById('opacity-value');
   if (opacityEl && opacityValueEl) {
-    opacityValueEl.textContent = `${Math.round(parseFloat(opacityEl.value) * 100)}%`;
+    const opacityText = `${Math.round(parseFloat(opacityEl.value) * 100)}%`;
+    opacityValueEl.textContent = opacityText;
+    opacityEl.setAttribute('aria-valuetext', opacityText);
+  }
+};
+
+const setPremiumControlsAccess = (hasAccess: boolean) => {
+  const premiumContainers = [
+    document.getElementById('presets-container'),
+    document.getElementById('auto-on-container')
+  ];
+
+  premiumContainers.forEach((container) => {
+    if (!container) return;
+
+    container.classList.toggle('premium-lock', !hasAccess);
+    container.setAttribute('aria-disabled', String(!hasAccess));
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('#presets-container .preset-btn').forEach((button) => {
+    button.disabled = !hasAccess;
+  });
+
+  const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+  if (autoOnEl) {
+    autoOnEl.disabled = !hasAccess;
   }
 };
 
@@ -90,16 +124,7 @@ const checkPremium = async () => {
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   }
 
-  // Lock/Unlock features
-  const presets = document.getElementById('presets-container');
-  const autoOn = document.getElementById('auto-on-container');
-  if (hasAccess) {
-    presets?.classList.remove('premium-lock');
-    autoOn?.classList.remove('premium-lock');
-  } else {
-    presets?.classList.add('premium-lock');
-    autoOn?.classList.add('premium-lock');
-  }
+  setPremiumControlsAccess(hasAccess);
 
   return hasAccess;
 };
