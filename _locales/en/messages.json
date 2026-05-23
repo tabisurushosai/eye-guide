@@ -1,23 +1,32 @@
 {
   "extName": { "message": "Reading Ruler" },
   "extDesc": { "message": "Shows a reading guideline at your cursor to keep your place and reduce line-skipping." },
-  "labelColor": { "message": "Color:" },
-  "labelThickness": { "message": "Thickness:" },
-  "labelOpacity": { "message": "Opacity:" },
-  "labelMode": { "message": "Mode:" },
+  "labelColor": { "message": "Color" },
+  "labelThickness": { "message": "Thickness" },
+  "labelOpacity": { "message": "Opacity" },
+  "labelMode": { "message": "Mode" },
   "modeHorizontal": { "message": "Horizontal" },
   "modeUnderline": { "message": "Underline" },
-  "modeWindow": { "message": "Focus Window" },
+  "modeWindow": { "message": "Focus window" },
   "btnOn": { "message": "ON" },
   "btnOff": { "message": "OFF" },
-  "labelPresets": { "message": "Presets:" },
-  "presetYellow": { "message": "Yellow preset" },
-  "presetGreen": { "message": "Green preset" },
-  "presetCyan": { "message": "Cyan preset" },
-  "presetMagenta": { "message": "Magenta preset" },
-  "labelAutoOn": { "message": "Auto ON:" },
-  "trialRemaining": {
-    "message": "$DAYS$ days left in trial",
+  "labelPresets": { "message": "Presets" },
+  "presetYellow": { "message": "Select yellow preset" },
+  "presetGreen": { "message": "Select green preset" },
+  "presetCyan": { "message": "Select cyan preset" },
+  "presetMagenta": { "message": "Select magenta preset" },
+  "labelAutoOn": { "message": "Auto-on for this site" },
+  "trialRemainingOne": {
+    "message": "$DAYS$ day left in free trial",
+    "placeholders": {
+      "days": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "trialRemainingMany": {
+    "message": "$DAYS$ days left in free trial",
     "placeholders": {
       "days": {
         "content": "$1",
@@ -25,12 +34,12 @@
       }
     }
   },
-  "trialExpired": { "message": "Trial expired" },
-  "btnUpgrade": { "message": "Upgrade to Premium ($3)" },
-  "premiumStatus": { "message": "Premium Active" },
-  "statusLoading": { "message": "Loading settings" },
+  "trialExpired": { "message": "Free trial ended" },
+  "btnUpgrade": { "message": "Upgrade to Premium (US$3)" },
+  "premiumStatus": { "message": "Premium is active" },
+  "statusLoading": { "message": "Loading settings..." },
   "statusReady": { "message": "Settings loaded" },
   "statusLineShown": { "message": "Reading line shown" },
   "statusLineHidden": { "message": "Reading line hidden" },
-  "statusUnavailable": { "message": "This page may not allow changes" }
+  "statusUnavailable": { "message": "This page does not allow changes" }
 }
