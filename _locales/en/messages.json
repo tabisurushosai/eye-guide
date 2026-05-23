@@ -11,6 +11,10 @@
   "btnOn": { "message": "ON" },
   "btnOff": { "message": "OFF" },
   "labelPresets": { "message": "Presets:" },
+  "presetYellow": { "message": "Yellow preset" },
+  "presetGreen": { "message": "Green preset" },
+  "presetCyan": { "message": "Cyan preset" },
+  "presetMagenta": { "message": "Magenta preset" },
   "labelAutoOn": { "message": "Auto ON:" },
   "trialRemaining": {
     "message": "$DAYS$ days left in trial",
