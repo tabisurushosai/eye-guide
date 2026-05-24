@@ -19,6 +19,7 @@ const localize = () => {
 
   const elements: LocalizeElement[] = [
     { id: 'title', key: 'extName' },
+    { id: 'subtitle', key: 'extDesc' },
     { id: 'onboarding-title', key: 'onboardingTitle' },
     { id: 'onboarding-body', key: 'onboardingBody' },
     { id: 'onboarding-hint', key: 'onboardingHint' },
@@ -56,9 +57,9 @@ const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
 
-const INITIAL_ACTION_STATUS_KEYS: Record<InitialGuideState['actionStatus'], string> = {
-  ready: 'statusReady',
-  firstUseEmpty: 'statusFirstUseEmpty'
+const INITIAL_ACTION_STATUS: Record<InitialGuideState['actionStatus'], { messageKey: string; tone: StatusTone }> = {
+  ready: { messageKey: 'statusReady', tone: 'success' },
+  firstUseEmpty: { messageKey: 'statusFirstUseEmpty', tone: 'info' }
 };
 
 const getElementById = <T extends HTMLElement>(id: string): T | null => {
@@ -189,7 +190,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateRangeReadouts();
   const initialGuideState = await loadInitialSettings();
   const hasAccess = await checkPremium();
-  setActionStatus(INITIAL_ACTION_STATUS_KEYS[initialGuideState.actionStatus]);
+  const actionStatus = INITIAL_ACTION_STATUS[initialGuideState.actionStatus];
+  setActionStatus(actionStatus.messageKey, actionStatus.tone);
 
   // Auto ON logic
   const tab = await getActiveTab();

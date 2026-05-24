@@ -13,6 +13,7 @@
       --text: #142033;
       --muted: #4f5f73;
       --border: #cfd8e6;
+      --divider: #e6edf6;
       --primary: #245dcc;
       --primary-strong: #1d4ea8;
       --info-bg: #edf4ff;
@@ -33,7 +34,7 @@
     }
 
     body {
-      width: 336px;
+      width: 352px;
       margin: 0;
       padding: 18px;
       background: var(--bg);
@@ -45,7 +46,7 @@
 
     h1 {
       margin: 0;
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
       line-height: 1.25;
       letter-spacing: 0.01em;
@@ -84,13 +85,27 @@
     .panel {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 2px 2px 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
     }
 
     .settings {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0;
       padding: 16px;
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -104,6 +119,7 @@
       gap: 9px;
       min-height: 44px;
       padding: 10px 12px;
+      margin-bottom: 2px;
       border: 1px solid var(--border);
       border-radius: 12px;
       background: var(--surface-muted);
@@ -180,6 +196,8 @@
       gap: 12px;
       align-items: center;
       min-height: 44px;
+      padding: 11px 0;
+      border-top: 1px solid var(--divider);
     }
 
     .setting-item label {
@@ -298,13 +316,13 @@
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      min-height: 38px;
-      padding: 8px 10px;
+      min-height: 44px;
+      padding: 10px 12px;
       border: 1px solid var(--info-border);
       border-radius: 12px;
       background: var(--info-bg);
       color: var(--info-text);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       line-height: 1.4;
     }
@@ -332,15 +350,18 @@
 </head>
 <body>
   <main class="panel">
-    <h1 id="title"></h1>
+    <header class="header">
+      <h1 id="title"></h1>
+      <p id="subtitle" class="subtitle"></p>
+    </header>
     <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" hidden>
       <h2 id="onboarding-title"></h2>
       <p id="onboarding-body"></p>
       <p id="onboarding-hint" class="onboarding-hint"></p>
       <p id="onboarding-action" class="onboarding-action"></p>
     </section>
-    <section class="settings" aria-labelledby="title">
-      <div id="premium-status" class="status-card" role="status" aria-live="polite" aria-atomic="true"></div>
+    <section class="settings" aria-labelledby="title" aria-describedby="subtitle">
+      <div id="premium-status" class="status-card" data-state="info" role="status" aria-live="polite" aria-atomic="true" aria-busy="true">Premium の状態を確認しています...</div>
       <div class="setting-item">
         <label id="label-color" for="color">色</label>
         <input type="color" id="color" value="#ffff00">
@@ -385,7 +406,7 @@
       <button class="primary-btn" id="toggle-on" type="button">オン</button>
       <button class="secondary-btn" id="toggle-off" type="button">オフ</button>
     </div>
-    <div id="action-status" class="action-status" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div id="action-status" class="action-status" data-tone="info" role="status" aria-live="polite" aria-atomic="true" aria-busy="true">設定を読み込んでいます...</div>
     <div id="upgrade-container" class="upgrade-container">
       <button id="btn-upgrade" class="upgrade-btn" type="button"></button>
     </div>
