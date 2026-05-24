@@ -1,4 +1,5 @@
 import { hexToRgba } from './core/color';
+import { isEyeGuideMessage, MESSAGE_TYPES } from './core/messages';
 import { normalizeSettings, type Settings } from './core/settings';
 
 const LINE_ID = 'eye-guide-line';
@@ -14,16 +15,7 @@ type EyeGuideWindow = Window & {
   updateSettings?: typeof updateSettings;
 };
 
-type EyeGuideMessage = {
-  type?: unknown;
-  settings?: Partial<Settings>;
-};
-
 const eyeGuideWindow = window as EyeGuideWindow;
-
-const isEyeGuideMessage = (message: unknown): message is EyeGuideMessage => {
-  return typeof message === 'object' && message !== null;
-};
 
 const getClampedLineTop = (top: number) => {
   return Math.max(0, Math.min(window.innerHeight, top));
@@ -84,7 +76,6 @@ export function showLine() {
   lineElement.style.pointerEvents = 'none';
   lineElement.style.zIndex = '2147483647';
   lineElement.setAttribute('aria-hidden', 'true');
-  setLineTop(currentLineTop);
 
   document.body.appendChild(lineElement);
   setLineTop(currentLineTop);
@@ -112,11 +103,11 @@ if (!eyeGuideWindow.eyeGuideInjected) {
       return;
     }
 
-    if (message.type === 'UPDATE_SETTINGS') {
+    if (message.type === MESSAGE_TYPES.updateSettings) {
       updateSettings(message.settings ?? {});
-    } else if (message.type === 'SHOW_LINE') {
+    } else if (message.type === MESSAGE_TYPES.showLine) {
       showLine();
-    } else if (message.type === 'REMOVE_LINE') {
+    } else if (message.type === MESSAGE_TYPES.removeLine) {
       removeLine();
     }
   });
