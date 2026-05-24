@@ -1,11 +1,11 @@
 {
   "extName": { "message": "すーっと読める定規" },
-  "extDesc": { "message": "マウスの位置に読書ラインを表示し、読み飛ばしを減らします。ディスレクシアや読みづらさの支援に。" },
-  "onboardingTitle": { "message": "まだ読書ラインは表示されていません" },
-  "onboardingBody": { "message": "最初は何も表示されない状態です。読みたいページを開いたまま、このパネルから始められます。" },
-  "onboardingRoute": { "message": "次にすること: 設定を変えずに試すなら「オン」を押してください。" },
-  "onboardingTip": { "message": "ひとことガイド: ラインはマウスの位置について動きます。" },
-  "onboardingAction": { "message": "表示後は Shift+Alt+↑/↓ キーでも移動できます。" },
+  "extDesc": { "message": "マウス位置に読書ラインを表示し、今読んでいる行を見失いにくくします。読み飛ばしや読みづらさの軽減を支援します。" },
+  "onboardingTitle": { "message": "読書ラインはまだ表示されていません" },
+  "onboardingBody": { "message": "最初は何も表示されません。読みたいページを開いたまま、このパネルから始められます。" },
+  "onboardingRoute": { "message": "次の手順: まず試す場合は「オン」を押してください。" },
+  "onboardingTip": { "message": "ひとことガイド: ラインはマウスの位置に合わせて動きます。" },
+  "onboardingAction": { "message": "表示後は、Shift+Alt+↑/↓ キーでも位置を調整できます。" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },
@@ -20,9 +20,9 @@
   "presetGreen": { "message": "緑色のプリセットを選択" },
   "presetCyan": { "message": "シアンのプリセットを選択" },
   "presetMagenta": { "message": "マゼンタのプリセットを選択" },
-  "labelAutoOn": { "message": "このサイトでは自動的にオン" },
+  "labelAutoOn": { "message": "このサイトで自動的にオン" },
   "trialRemainingOne": {
-    "message": "無料トライアルは残り$DAYS$日です",
+    "message": "無料トライアルは残り$DAYS$日です。",
     "placeholders": {
       "days": {
         "content": "$1",
@@ -31,7 +31,7 @@
     }
   },
   "trialRemainingMany": {
-    "message": "無料トライアルは残り$DAYS$日です",
+    "message": "無料トライアルは残り$DAYS$日です。",
     "placeholders": {
       "days": {
         "content": "$1",
@@ -39,22 +39,22 @@
       }
     }
   },
-  "trialExpired": { "message": "無料トライアルは終了しました" },
+  "trialExpired": { "message": "無料トライアルは終了しました。" },
   "btnUpgrade": {
-    "message": "Premium にアップグレード（$PRICE$）",
+    "message": "プレミアムにアップグレード（$PRICE$）",
     "placeholders": {
       "price": {
         "content": "$1",
-        "example": "3米ドル"
+        "example": "US$3"
       }
     }
   },
-  "premiumStatusLoading": { "message": "Premium の状態を確認しています..." },
-  "premiumStatus": { "message": "Premium が有効です" },
+  "premiumStatusLoading": { "message": "プレミアムの利用状況を確認しています..." },
+  "premiumStatus": { "message": "プレミアムは有効です。" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
-  "statusReady": { "message": "設定を読み込みました" },
-  "statusFirstUseEmpty": { "message": "まだ読書ラインは表示されていません。読みたいページで「オン」を押すと始まります。" },
+  "statusReady": { "message": "設定を読み込みました。" },
+  "statusFirstUseEmpty": { "message": "読書ラインはまだ表示されていません。読みたいページで「オン」を押すと始まります。" },
   "statusLineShown": { "message": "読書ラインを表示しました。キーボードでは Shift+Alt+↑/↓ キーで移動できます。" },
-  "statusLineHidden": { "message": "読書ラインを非表示にしました" },
-  "statusUnavailable": { "message": "このページでは読書ラインを使用できません" }
+  "statusLineHidden": { "message": "読書ラインを非表示にしました。" },
+  "statusUnavailable": { "message": "このページでは読書ラインを使用できません。" }
 }

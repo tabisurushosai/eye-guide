@@ -1,11 +1,11 @@
 {
   "extName": { "message": "Reading Ruler" },
-  "extDesc": { "message": "Displays a reading line at your cursor to help you keep your place and reduce line skipping." },
-  "onboardingTitle": { "message": "No reading line is showing yet" },
-  "onboardingBody": { "message": "Your first view starts empty. Keep the page you want to read open and start from this panel." },
-  "onboardingRoute": { "message": "Next step: select On to try it with the default settings." },
-  "onboardingTip": { "message": "Quick guide: the line follows your mouse position." },
-  "onboardingAction": { "message": "Once it appears, use Shift+Alt+Up/Down to move the line with the keyboard." },
+  "extDesc": { "message": "Displays a reading line at your cursor so it is easier to keep your place and avoid skipping lines." },
+  "onboardingTitle": { "message": "No reading line is displayed yet" },
+  "onboardingBody": { "message": "Nothing is shown at first. Keep the page you want to read open, then start from this panel." },
+  "onboardingRoute": { "message": "Next step: select On to try the default settings." },
+  "onboardingTip": { "message": "Quick guide: the line follows your mouse pointer." },
+  "onboardingAction": { "message": "After it appears, you can also move it with Shift+Alt+Up/Down." },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
   "labelOpacity": { "message": "Opacity" },
@@ -20,7 +20,7 @@
   "presetGreen": { "message": "Select the green preset" },
   "presetCyan": { "message": "Select the cyan preset" },
   "presetMagenta": { "message": "Select the magenta preset" },
-  "labelAutoOn": { "message": "Turn on automatically for this site" },
+  "labelAutoOn": { "message": "Turn on automatically on this site" },
   "trialRemainingOne": {
     "message": "$DAYS$ day left in your free trial",
     "placeholders": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "trialExpired": { "message": "Your free trial has ended" },
+  "trialExpired": { "message": "Your free trial has ended." },
   "btnUpgrade": {
     "message": "Upgrade to Premium ($PRICE$)",
     "placeholders": {
@@ -50,11 +50,11 @@
     }
   },
   "premiumStatusLoading": { "message": "Checking Premium status..." },
-  "premiumStatus": { "message": "Premium is active" },
+  "premiumStatus": { "message": "Premium is active." },
   "statusLoading": { "message": "Loading settings..." },
-  "statusReady": { "message": "Settings loaded" },
-  "statusFirstUseEmpty": { "message": "No reading line is showing yet. Open a page to read, then select On to start." },
+  "statusReady": { "message": "Settings loaded." },
+  "statusFirstUseEmpty": { "message": "No reading line is displayed yet. Open a page to read, then select On to start." },
   "statusLineShown": { "message": "Reading line shown. Use Shift+Alt+Up/Down to move it with the keyboard." },
-  "statusLineHidden": { "message": "Reading line hidden" },
-  "statusUnavailable": { "message": "The reading line cannot be used on this page" }
+  "statusLineHidden": { "message": "Reading line hidden." },
+  "statusUnavailable": { "message": "The reading line is not available on this page." }
 }
