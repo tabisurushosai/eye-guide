@@ -3,6 +3,7 @@
   "extDesc": { "message": "マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。" },
   "onboardingTitle": { "message": "はじめて使うときは" },
   "onboardingBody": { "message": "読みたいページでオンを押すと、マウスの位置に読書ラインが表示されます。" },
+  "onboardingHint": { "message": "迷ったら、初期設定のまま始められます。" },
   "onboardingAction": { "message": "色や太さを確認して、まずはオンを押してください。" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
@@ -43,6 +44,7 @@
   "premiumStatus": { "message": "Premiumが有効です" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
   "statusReady": { "message": "設定を読み込みました" },
+  "statusFirstUseEmpty": { "message": "まだ読書ラインは表示されていません。読みたいページで「オン」を押すと始まります。" },
   "statusLineShown": { "message": "読書ラインを表示しました" },
   "statusLineHidden": { "message": "読書ラインを非表示にしました" },
   "statusUnavailable": { "message": "このページでは読書ラインを使用できません" }
