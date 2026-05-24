@@ -58,6 +58,7 @@
 
     button {
       min-height: 44px;
+      padding: 0 12px;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--surface);
@@ -228,8 +229,9 @@
     }
 
     input[type="checkbox"] {
-      width: 24px;
-      height: 24px;
+      width: 44px;
+      height: 44px;
+      margin: 0;
       accent-color: var(--primary);
     }
 
@@ -247,6 +249,11 @@
       padding: 0;
       border: 1px solid rgba(23, 32, 51, 0.32);
       border-radius: 9px;
+    }
+
+    .preset-btn[aria-pressed="true"] {
+      border-color: var(--text);
+      box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 5px var(--text);
     }
 
     .btn-group {
@@ -307,12 +314,8 @@
       color: var(--warning-text);
     }
 
-    .premium-lock {
-      opacity: 0.58;
-    }
-
     .premium-lock label {
-      color: #69778a;
+      color: var(--muted);
     }
 
     [hidden] {
@@ -337,10 +340,10 @@
       <div class="setting-item" id="presets-container">
         <label id="label-presets">プリセット</label>
         <div class="presets" role="group" aria-labelledby="label-presets">
-          <button class="preset-btn" type="button" data-color="#ffff00" data-label-key="presetYellow" style="background:#ffff00" aria-label="黄色プリセットを選択"></button>
-          <button class="preset-btn" type="button" data-color="#00ff00" data-label-key="presetGreen" style="background:#00ff00" aria-label="緑色プリセットを選択"></button>
-          <button class="preset-btn" type="button" data-color="#00ffff" data-label-key="presetCyan" style="background:#00ffff" aria-label="シアンプリセットを選択"></button>
-          <button class="preset-btn" type="button" data-color="#ff00ff" data-label-key="presetMagenta" style="background:#ff00ff" aria-label="マゼンタプリセットを選択"></button>
+          <button class="preset-btn" type="button" data-color="#ffff00" data-label-key="presetYellow" style="background:#ffff00" aria-label="黄色プリセットを選択" aria-pressed="false"></button>
+          <button class="preset-btn" type="button" data-color="#00ff00" data-label-key="presetGreen" style="background:#00ff00" aria-label="緑色プリセットを選択" aria-pressed="false"></button>
+          <button class="preset-btn" type="button" data-color="#00ffff" data-label-key="presetCyan" style="background:#00ffff" aria-label="シアンプリセットを選択" aria-pressed="false"></button>
+          <button class="preset-btn" type="button" data-color="#ff00ff" data-label-key="presetMagenta" style="background:#ff00ff" aria-label="マゼンタプリセットを選択" aria-pressed="false"></button>
         </div>
       </div>
       <div class="setting-item">
