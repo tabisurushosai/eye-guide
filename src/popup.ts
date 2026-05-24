@@ -1,5 +1,5 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
-import { formatInteger, formatPercent, formatPixels, normalizeLocale } from './core/format';
+import { formatInteger, formatPercent, formatPixels, formatUsdAmount, normalizeLocale } from './core/format';
 import { getInitialGuideState, type InitialGuideState } from './core/onboarding';
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
@@ -9,9 +9,11 @@ import { chromeStorage } from './storage/chromeStorage';
 interface LocalizeElement {
   id: string;
   key: string;
+  substitutions?: string[];
 }
 
 const uiLocale = normalizeLocale(chrome.i18n.getUILanguage());
+const PREMIUM_PRICE_USD = 3;
 
 const localize = () => {
   document.documentElement.lang = uiLocale;
@@ -35,13 +37,13 @@ const localize = () => {
     { id: 'toggle-off', key: 'btnOff' },
     { id: 'label-presets', key: 'labelPresets' },
     { id: 'label-auto-on', key: 'labelAutoOn' },
-    { id: 'btn-upgrade', key: 'btnUpgrade' }
+    { id: 'btn-upgrade', key: 'btnUpgrade', substitutions: [formatUsdAmount(PREMIUM_PRICE_USD, uiLocale)] }
   ];
 
-  elements.forEach(({ id, key }) => {
+  elements.forEach(({ id, key, substitutions }) => {
     const el = document.getElementById(id);
     if (el) {
-      el.textContent = chrome.i18n.getMessage(key);
+      el.textContent = chrome.i18n.getMessage(key, substitutions);
     }
   });
 
