@@ -1,6 +1,9 @@
 {
   "extName": { "message": "Reading Ruler" },
   "extDesc": { "message": "Shows a reading guideline at your cursor to keep your place and reduce line-skipping." },
+  "onboardingTitle": { "message": "First time here?" },
+  "onboardingBody": { "message": "Press ON on the page you want to read, and the reading line will follow your cursor." },
+  "onboardingAction": { "message": "Check the color and thickness, then press ON to start." },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
   "labelOpacity": { "message": "Opacity" },

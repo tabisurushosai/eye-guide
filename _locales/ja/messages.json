@@ -1,6 +1,9 @@
 {
   "extName": { "message": "すーっと読める定規" },
   "extDesc": { "message": "マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。" },
+  "onboardingTitle": { "message": "はじめて使うときは" },
+  "onboardingBody": { "message": "読みたいページでONを押すと、マウスの位置に読書ラインが表示されます。" },
+  "onboardingAction": { "message": "色や太さを確認して、まずはONを押してください。" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },

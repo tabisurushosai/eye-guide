@@ -100,6 +100,32 @@
       font-weight: 700;
     }
 
+    .onboarding-card {
+      padding: 12px;
+      border: 1px solid #c9d7f2;
+      border-radius: 14px;
+      background: #edf4ff;
+      color: var(--text);
+    }
+
+    .onboarding-card h2 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .onboarding-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .onboarding-card .onboarding-action {
+      margin-top: 8px;
+      color: var(--primary-strong);
+      font-weight: 700;
+    }
+
     .status-card[data-state="success"] {
       border-color: #b7e2c8;
       background: var(--success-bg);
@@ -243,11 +269,20 @@
     .premium-lock {
       opacity: 0.54;
     }
+
+    [hidden] {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
   <main class="panel">
     <h1 id="title"></h1>
+    <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" hidden>
+      <h2 id="onboarding-title"></h2>
+      <p id="onboarding-body"></p>
+      <p id="onboarding-action" class="onboarding-action"></p>
+    </section>
     <section class="settings" aria-labelledby="title">
       <div id="premium-status" class="status-card" role="status" aria-live="polite" aria-atomic="true"></div>
       <div class="setting-item">
