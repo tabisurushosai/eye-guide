@@ -178,24 +178,54 @@
       line-height: 1.5;
     }
 
-    .onboarding-card .onboarding-route {
-      margin-top: 8px;
-      color: #2b3d55;
-      font-weight: 700;
+    .onboarding-steps {
+      display: grid;
+      gap: 6px;
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .onboarding-card .onboarding-tip {
-      margin-top: 8px;
+    .onboarding-steps li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 8px;
+      align-items: start;
       padding: 8px 10px;
       border: 1px solid var(--info-border);
       border-radius: 10px;
-      background: var(--surface);
-      color: var(--primary-strong);
-      font-weight: 700;
+      background: rgba(255, 255, 255, 0.72);
+      color: #2b3d55;
+      font-size: 13px;
+      line-height: 1.45;
     }
 
-    .onboarding-card .onboarding-action {
-      margin-top: 8px;
+    .onboarding-steps strong {
+      display: block;
+      color: var(--primary-strong);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .onboarding-step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .onboarding-card .onboarding-tip {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border: 1px solid var(--info-border);
+      border-radius: 10px;
+      background: var(--surface);
       color: var(--primary-strong);
       font-weight: 700;
     }
@@ -416,12 +446,26 @@
       <h1 id="title"></h1>
       <p id="subtitle" class="subtitle"></p>
     </header>
-    <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" aria-describedby="onboarding-body onboarding-route onboarding-tip onboarding-action" hidden>
+    <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" aria-describedby="onboarding-body onboarding-tip" hidden>
       <h2 id="onboarding-title"></h2>
       <p id="onboarding-body"></p>
-      <p id="onboarding-route" class="onboarding-route"></p>
+      <ol class="onboarding-steps">
+        <li>
+          <span class="onboarding-step-number" aria-hidden="true">1</span>
+          <span>
+            <strong id="onboarding-step-page-title"></strong>
+            <span id="onboarding-step-page"></span>
+          </span>
+        </li>
+        <li>
+          <span class="onboarding-step-number" aria-hidden="true">2</span>
+          <span>
+            <strong id="onboarding-step-on-title"></strong>
+            <span id="onboarding-step-on"></span>
+          </span>
+        </li>
+      </ol>
       <p id="onboarding-tip" class="onboarding-tip"></p>
-      <p id="onboarding-action" class="onboarding-action"></p>
     </section>
     <section class="settings" aria-labelledby="title" aria-describedby="subtitle">
       <div id="premium-status" class="status-card" data-state="info" role="status" aria-live="polite" aria-atomic="true" aria-busy="true">Premium の状態を確認しています...</div>
