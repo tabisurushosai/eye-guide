@@ -4,7 +4,7 @@
   "onboardingTitle": { "message": "First time here?" },
   "onboardingBody": { "message": "Open the page you want to read, then select On to show the reading line at your cursor." },
   "onboardingHint": { "message": "If you are unsure, start with the default settings." },
-  "onboardingAction": { "message": "Check the color and thickness, then select On to start." },
+  "onboardingAction": { "message": "Check the color and thickness, then select On to start. After it is shown, Shift+Alt+Up/Down also moves the line." },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
   "labelOpacity": { "message": "Opacity" },
@@ -45,7 +45,7 @@
   "statusLoading": { "message": "Loading settings..." },
   "statusReady": { "message": "Settings loaded" },
   "statusFirstUseEmpty": { "message": "No reading line is showing yet. Open a page to read, then select On to start." },
-  "statusLineShown": { "message": "Reading line is shown" },
+  "statusLineShown": { "message": "Reading line is shown. Use Shift+Alt+Up/Down to move it with the keyboard." },
   "statusLineHidden": { "message": "Reading line is hidden" },
   "statusUnavailable": { "message": "The reading line cannot be used on this page" }
 }
