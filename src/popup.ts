@@ -106,11 +106,21 @@ const setPremiumStatus = (message: string, state: StatusTone = 'info', isBusy = 
 
 const syncPresetSelection = (selectedColor: string) => {
   const normalizedSelectedColor = selectedColor.toLowerCase();
-
-  document.querySelectorAll<HTMLButtonElement>('.preset-btn[data-color]').forEach((button) => {
-    const presetColor = button.dataset.color?.toLowerCase();
-    button.setAttribute('aria-pressed', String(presetColor === normalizedSelectedColor));
+  const presetButtons = getPresetButtons();
+  const checkedIndex = presetButtons.findIndex((button) => {
+    return button.dataset.color?.toLowerCase() === normalizedSelectedColor;
   });
+  const tabbableIndex = checkedIndex >= 0 ? checkedIndex : 0;
+
+  presetButtons.forEach((button, index) => {
+    const presetColor = button.dataset.color?.toLowerCase();
+    button.setAttribute('aria-checked', String(presetColor === normalizedSelectedColor));
+    button.tabIndex = button.disabled ? -1 : (index === tabbableIndex ? 0 : -1);
+  });
+};
+
+const getPresetButtons = () => {
+  return Array.from(document.querySelectorAll<HTMLButtonElement>('.preset-btn[data-color]'));
 };
 
 const syncPresetSelectionFromInput = () => {
@@ -154,6 +164,7 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
   document.querySelectorAll<HTMLButtonElement>('#presets-container .preset-btn').forEach((button) => {
     button.disabled = !hasAccess;
   });
+  syncPresetSelectionFromInput();
 
   const autoOnEl = getElementById<HTMLInputElement>('auto-on');
   if (autoOnEl) {
@@ -295,18 +306,57 @@ const loadInitialSettings = async () => {
   });
 });
 
+const selectPreset = async (button: HTMLButtonElement, shouldFocus = false) => {
+  const color = button.dataset.color;
+  if (!color || button.disabled) {
+    return;
+  }
+
+  const colorInput = getElementById<HTMLInputElement>('color');
+  if (colorInput) {
+    colorInput.value = color;
+    syncPresetSelection(color);
+    if (shouldFocus) {
+      button.focus();
+    }
+    const settings = await saveSettings();
+    await updateContent(settings);
+  }
+};
+
+const getNextPresetButton = (currentButton: HTMLButtonElement, key: string) => {
+  const buttons = getPresetButtons().filter((button) => !button.disabled);
+  const currentIndex = buttons.indexOf(currentButton);
+  if (buttons.length === 0 || currentIndex === -1) {
+    return null;
+  }
+
+  if (key === 'Home') {
+    return buttons[0];
+  }
+  if (key === 'End') {
+    return buttons[buttons.length - 1];
+  }
+
+  const direction = key === 'ArrowLeft' || key === 'ArrowUp' ? -1 : 1;
+  return buttons[(currentIndex + direction + buttons.length) % buttons.length];
+};
+
 // Color presets
-document.querySelectorAll('.preset-btn').forEach(btn => {
+getPresetButtons().forEach(btn => {
   btn.addEventListener('click', async (e) => {
-    const color = (e.currentTarget as HTMLButtonElement).dataset.color;
-    if (color) {
-      const colorInput = getElementById<HTMLInputElement>('color');
-      if (colorInput) {
-        colorInput.value = color;
-        syncPresetSelection(color);
-        const settings = await saveSettings();
-        await updateContent(settings);
-      }
+    await selectPreset(e.currentTarget as HTMLButtonElement);
+  });
+
+  btn.addEventListener('keydown', async (e) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) {
+      return;
+    }
+
+    e.preventDefault();
+    const nextButton = getNextPresetButton(e.currentTarget as HTMLButtonElement, e.key);
+    if (nextButton) {
+      await selectPreset(nextButton, true);
     }
   });
 });
