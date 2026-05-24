@@ -1,14 +1,21 @@
-import type { StorageAdapter, StorageReadKeys, StorageSnapshot } from './types';
+import type { StorageAdapter, StorageKey, StorageReadKeys, StorageSnapshot, StorageWriteValues } from './types';
 
-const toChromeStorageKeys = (keys: StorageReadKeys): string | string[] => {
+interface ChromeStorageArea {
+  get(keys: string | string[]): Promise<unknown>;
+  set(values: StorageWriteValues): Promise<void>;
+}
+
+const toChromeStorageKeys = <K extends StorageKey>(keys: StorageReadKeys<K>): string | string[] => {
   return typeof keys === 'string' ? keys : [...keys];
 };
 
-export const chromeStorage: StorageAdapter = {
-  async read(keys): Promise<StorageSnapshot> {
-    return chrome.storage.local.get(toChromeStorageKeys(keys)) as Promise<StorageSnapshot>;
+export const createChromeStorageAdapter = (storageArea: ChromeStorageArea): StorageAdapter => ({
+  async read<K extends StorageKey>(keys: StorageReadKeys<K>): Promise<StorageSnapshot<K>> {
+    return storageArea.get(toChromeStorageKeys(keys)) as Promise<StorageSnapshot<K>>;
   },
   async write(values) {
-    await chrome.storage.local.set(values);
+    await storageArea.set(values);
   }
-};
+});
+
+export const chromeStorage = createChromeStorageAdapter(chrome.storage.local);

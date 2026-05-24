@@ -5,6 +5,7 @@ import { getInitialGuideState, type InitialGuideState } from './core/onboarding'
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
 import { chromeStorage } from './storage/chromeStorage';
+import { STORAGE_KEYS } from './storage/types';
 
 // Localization
 interface LocalizeElement {
@@ -173,10 +174,10 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
 };
 
 const checkPremium = async () => {
-  const data = await chromeStorage.read(['trial_start_ts', 'isPremium']);
+  const data = await chromeStorage.read([STORAGE_KEYS.trialStartTs, STORAGE_KEYS.isPremium]);
   const premiumAccess = getPremiumAccess(data.trial_start_ts, data.isPremium);
   if (premiumAccess.shouldStoreTrialStart) {
-    await chromeStorage.write({ trial_start_ts: premiumAccess.trialStart });
+    await chromeStorage.write({ [STORAGE_KEYS.trialStartTs]: premiumAccess.trialStart });
   }
 
   const upgradeContainer = getElementById<HTMLDivElement>('upgrade-container');
@@ -212,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tab = await getActiveTab();
   if (tab?.url && hasAccess) {
     const hostname = getHostnameFromUrl(tab.url);
-    const data = await chromeStorage.read('autoOnSites');
+    const data = await chromeStorage.read(STORAGE_KEYS.autoOnSites);
     if (isAutoOnSite(data.autoOnSites ?? [], hostname)) {
       const autoOnEl = getElementById<HTMLInputElement>('auto-on');
       if (autoOnEl) autoOnEl.checked = true;
@@ -233,8 +234,8 @@ const getSettings = (): Settings => {
 
 const saveSettings = async (): Promise<Settings> => {
   const settings = getSettings();
-  const data = await chromeStorage.read('settings');
-  await chromeStorage.write({ settings: mergeSettingsForStorage(data.settings, settings) });
+  const data = await chromeStorage.read(STORAGE_KEYS.settings);
+  await chromeStorage.write({ [STORAGE_KEYS.settings]: mergeSettingsForStorage(data.settings, settings) });
   setOnboardingGuideVisible(false);
 
   // Handle autoOnSites
@@ -242,9 +243,9 @@ const saveSettings = async (): Promise<Settings> => {
   if (tab?.url) {
     const hostname = getHostnameFromUrl(tab.url);
     if (hostname) {
-      const storageData = await chromeStorage.read('autoOnSites');
+      const storageData = await chromeStorage.read(STORAGE_KEYS.autoOnSites);
       const autoOnSites = updateAutoOnSites(storageData.autoOnSites ?? [], hostname, settings.autoOn);
-      await chromeStorage.write({ autoOnSites });
+      await chromeStorage.write({ [STORAGE_KEYS.autoOnSites]: autoOnSites });
     }
   }
 
@@ -264,7 +265,7 @@ const updateContent = async (settings: Partial<Settings>) => {
 };
 
 const loadInitialSettings = async () => {
-  const data = await chromeStorage.read(['settings', 'autoOnSites']);
+  const data = await chromeStorage.read([STORAGE_KEYS.settings, STORAGE_KEYS.autoOnSites]);
   const initialGuideState = getInitialGuideState(data.settings);
   setOnboardingGuideVisible(initialGuideState.showOnboardingGuide);
 
