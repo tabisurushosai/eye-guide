@@ -13,7 +13,7 @@ export const createChromeStorageAdapter = (storageArea: ChromeStorageArea): Stor
   async read<K extends StorageKey>(keys: StorageReadKeys<K>): Promise<StorageSnapshot<K>> {
     return storageArea.get(toChromeStorageKeys(keys)) as Promise<StorageSnapshot<K>>;
   },
-  async write(values) {
+  async write<K extends StorageKey>(values: StorageWriteValues<K>) {
     await storageArea.set(values);
   }
 });

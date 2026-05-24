@@ -20,7 +20,9 @@ Use `STORAGE_KEYS` from `src/storage/types.ts` when an entrypoint or adapter nee
 
 Adapters must keep the key names below unchanged. Platform-specific adapters may translate `read`/`write` to Chrome storage, iOS local storage, Android shared preferences, or another local persistence mechanism, but they should not change the serialized value shapes. Missing values should stay omitted/`undefined`; callers in the UI shell should apply defaults with `src/core` helpers instead of storing platform-specific fallback objects.
 
-Adapter implementations should not expose platform handles, promises from native SDKs with non-standard behavior, or UI objects through `StorageValues`. Keep those details inside the adapter and return plain JSON-compatible values.
+Adapter implementations should not expose platform handles, promises from native SDKs with non-standard behavior, or UI objects through `StorageValueMap`. Keep those details inside the adapter and return plain JSON-compatible values.
+
+When adding another adapter, implement only the `StorageAdapter` interface from `src/storage/types.ts` and inject that adapter from the platform entrypoint. Avoid importing Chrome, iOS, Android, or DOM APIs from `src/core`; core functions should receive plain values and return plain values.
 
 ## Storage compatibility
 
@@ -41,3 +43,12 @@ Mobile ports should implement the same `StorageAdapter` contract with local devi
 - Keep new persistence code behind a `StorageAdapter` implementation. A mobile adapter should return plain `StorageSnapshot` objects and should map native storage keys through `STORAGE_KEYS` instead of duplicating string literals.
 - Keep the app fully offline unless a future product decision explicitly changes the privacy model and permissions.
 - Do not add extension permissions, remote code loading, external CDNs, or external fonts for the Chrome build while preparing portability changes.
+
+## Portability verification checklist
+
+Before opening a portability PR:
+
+- Search `src/core` for `chrome`, platform SDK imports, and persistence imports; there should be no matches.
+- Run `npm run build`; this runs the Chrome-free core typecheck before the extension typecheck and Vite build.
+- Confirm `dist/manifest.json` and `dist/icons/icon16.png`, `dist/icons/icon48.png`, `dist/icons/icon128.png` exist so the Chrome extension can be loaded from `dist/` alone.
+- Confirm `public/manifest.json` keeps `manifest_version: 3` and does not add permissions or host permissions for portability-only work.
