@@ -31,6 +31,7 @@ const localize = () => {
     { id: 'onboarding-step-on-title', key: 'onboardingStepOnTitle' },
     { id: 'onboarding-step-on', key: 'onboardingStepOn' },
     { id: 'onboarding-tip', key: 'onboardingTip' },
+    { id: 'settings-title', key: 'settingsTitle' },
     { id: 'label-color', key: 'labelColor' },
     { id: 'label-thickness', key: 'labelThickness' },
     { id: 'label-opacity', key: 'labelOpacity' },
@@ -41,7 +42,9 @@ const localize = () => {
     { id: 'toggle-on', key: 'btnOn' },
     { id: 'toggle-off', key: 'btnOff' },
     { id: 'label-presets', key: 'labelPresets' },
+    { id: 'preset-help', key: 'presetKeyboardHelp' },
     { id: 'label-auto-on', key: 'labelAutoOn' },
+    { id: 'action-controls-label', key: 'actionControlsLabel' },
     { id: 'btn-upgrade', key: 'btnUpgrade', substitutions: [formatUsdAmount(PREMIUM_PRICE_USD, uiLocale)] }
   ];
 
@@ -173,6 +176,7 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
   document.querySelectorAll<HTMLButtonElement>('#presets-container .preset-btn').forEach((button) => {
     button.disabled = !hasAccess;
   });
+  getElementById('preset-group')?.setAttribute('aria-disabled', String(!hasAccess));
   syncPresetSelectionFromInput();
 
   const autoOnEl = getElementById<HTMLInputElement>('auto-on');

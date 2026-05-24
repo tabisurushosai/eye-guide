@@ -27,6 +27,7 @@
       --warning-border: #d9ae32;
       --warning-text: #634200;
       --focus: #0b57d0;
+      --focus-shadow: rgba(11, 87, 208, 0.22);
       --control-shadow: 0 1px 2px rgba(20, 32, 51, 0.06);
       --shadow: 0 16px 38px rgba(17, 29, 47, 0.1);
     }
@@ -63,8 +64,8 @@
     }
 
     button {
-      min-height: 44px;
-      padding: 0 14px;
+      min-height: 48px;
+      padding: 0 16px;
       border: 1px solid var(--border);
       border-radius: 12px;
       background: var(--surface);
@@ -84,8 +85,20 @@
     input:focus-visible,
     select:focus-visible {
       outline: 3px solid var(--focus);
-      outline-offset: 2px;
-      box-shadow: 0 0 0 2px var(--surface);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 4px var(--focus-shadow);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .panel {
@@ -260,15 +273,16 @@
       grid-template-columns: minmax(112px, 0.92fr) minmax(0, 1.55fr);
       gap: 14px;
       align-items: center;
-      min-height: 44px;
+      min-height: 48px;
       padding: 13px 0;
       border-top: 1px solid var(--divider);
     }
 
-    .setting-item label {
+    .setting-item label,
+    .setting-label {
       display: flex;
       align-items: center;
-      min-height: 44px;
+      min-height: 48px;
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
@@ -282,7 +296,7 @@
 
     input[type="color"] {
       width: 100%;
-      min-height: 44px;
+      min-height: 48px;
       padding: 4px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -292,7 +306,7 @@
 
     select {
       width: 100%;
-      min-height: 44px;
+      min-height: 48px;
       padding: 8px 11px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -311,7 +325,7 @@
 
     input[type="range"] {
       width: 100%;
-      min-height: 44px;
+      min-height: 48px;
       margin: 0;
       accent-color: var(--primary);
     }
@@ -337,8 +351,8 @@
     }
 
     input[type="checkbox"] {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       margin: 0;
       accent-color: var(--primary);
       justify-self: start;
@@ -353,8 +367,8 @@
     .preset-btn {
       min-width: 0;
       width: 100%;
-      height: 48px;
-      min-height: 48px;
+      height: 52px;
+      min-height: 52px;
       padding: 0;
       border: 2px solid #26364d;
       border-radius: 11px;
@@ -426,7 +440,8 @@
       color: var(--warning-text);
     }
 
-    .premium-lock label {
+    .premium-lock label,
+    .premium-lock .setting-label {
       color: var(--muted);
     }
 
@@ -475,20 +490,22 @@
       </ol>
       <p id="onboarding-tip" class="onboarding-tip"></p>
     </section>
-    <section class="settings" aria-labelledby="title" aria-describedby="subtitle">
+    <section class="settings" aria-labelledby="settings-title" aria-describedby="subtitle">
+      <h2 id="settings-title" class="sr-only">設定</h2>
       <div id="premium-status" class="status-card" data-state="info" role="status" aria-live="polite" aria-atomic="true" aria-busy="true">Premium の状態を確認しています...</div>
       <div class="setting-item">
         <label id="label-color" for="color">色</label>
         <input type="color" id="color" value="#ffff00">
       </div>
       <div class="setting-item" id="presets-container">
-        <label id="label-presets">プリセット</label>
-        <div class="presets" role="radiogroup" aria-labelledby="label-presets">
+        <span id="label-presets" class="setting-label">プリセット</span>
+        <div id="preset-group" class="presets" role="radiogroup" aria-labelledby="label-presets" aria-describedby="preset-help">
           <button class="preset-btn" type="button" role="radio" data-color="#ffff00" data-label-key="presetYellow" style="background:#ffff00" aria-label="黄色のプリセットを選択" aria-checked="true" tabindex="0"></button>
           <button class="preset-btn" type="button" role="radio" data-color="#00ff00" data-label-key="presetGreen" style="background:#00ff00" aria-label="緑色のプリセットを選択" aria-checked="false" tabindex="-1"></button>
           <button class="preset-btn" type="button" role="radio" data-color="#00ffff" data-label-key="presetCyan" style="background:#00ffff" aria-label="シアンのプリセットを選択" aria-checked="false" tabindex="-1"></button>
           <button class="preset-btn" type="button" role="radio" data-color="#ff00ff" data-label-key="presetMagenta" style="background:#ff00ff" aria-label="マゼンタのプリセットを選択" aria-checked="false" tabindex="-1"></button>
         </div>
+        <p id="preset-help" class="sr-only">矢印キーでプリセット色を選択できます。</p>
       </div>
       <div class="setting-item">
         <label id="label-thickness" for="thickness">太さ</label>
@@ -517,7 +534,8 @@
         <input type="checkbox" id="auto-on">
       </div>
     </section>
-    <div class="btn-group">
+    <div class="btn-group" role="group" aria-labelledby="action-controls-label">
+      <span id="action-controls-label" class="sr-only">読書ラインの表示操作</span>
       <button class="primary-btn" id="toggle-on" type="button" aria-describedby="action-status">オン</button>
       <button class="secondary-btn" id="toggle-off" type="button" aria-describedby="action-status">オフ</button>
     </div>

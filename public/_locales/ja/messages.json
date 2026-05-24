@@ -8,6 +8,7 @@
   "onboardingStepOnTitle": { "message": "オンで試す" },
   "onboardingStepOn": { "message": "設定はあとから変えられるので、まずは下の「オン」を押してください。" },
   "onboardingTip": { "message": "ひとことガイド: 表示後のラインはマウス位置に追従し、Shift+Alt+↑/↓ キーでも少しずつ動かせます。" },
+  "settingsTitle": { "message": "読書ラインの設定" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },
@@ -22,7 +23,9 @@
   "presetGreen": { "message": "緑色のプリセットを選択" },
   "presetCyan": { "message": "シアンのプリセットを選択" },
   "presetMagenta": { "message": "マゼンタのプリセットを選択" },
+  "presetKeyboardHelp": { "message": "矢印キー、Home、End キーでプリセット色を選択できます。" },
   "labelAutoOn": { "message": "このサイトで自動的にオン" },
+  "actionControlsLabel": { "message": "読書ラインの表示操作" },
   "trialRemainingOne": {
     "message": "無料トライアルは残り$DAYS$日です。",
     "placeholders": {

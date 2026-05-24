@@ -8,6 +8,7 @@
   "onboardingStepOnTitle": { "message": "Try On" },
   "onboardingStepOn": { "message": "You can adjust settings later, so select On below to start." },
   "onboardingTip": { "message": "Quick guide: once shown, the line follows your mouse and can move step by step with Shift+Alt+Up/Down." },
+  "settingsTitle": { "message": "Reading line settings" },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
   "labelOpacity": { "message": "Opacity" },
@@ -22,7 +23,9 @@
   "presetGreen": { "message": "Select the green preset" },
   "presetCyan": { "message": "Select the cyan preset" },
   "presetMagenta": { "message": "Select the magenta preset" },
+  "presetKeyboardHelp": { "message": "Use the arrow, Home, and End keys to select a preset color." },
   "labelAutoOn": { "message": "Turn on automatically on this site" },
+  "actionControlsLabel": { "message": "Reading line display controls" },
   "trialRemainingOne": {
     "message": "$DAYS$ day left in your free trial",
     "placeholders": {
