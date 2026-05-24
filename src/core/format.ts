@@ -18,3 +18,6 @@ export const formatPercent = (value: number, locale: SupportedLocale): string =>
     style: 'percent',
     maximumFractionDigits: 0
   }).format(value);
+
+export const formatUsdAmount = (value: number, locale: SupportedLocale): string =>
+  locale === 'ja' ? `${formatInteger(value, locale)}米ドル` : `US$${formatInteger(value, locale)}`;

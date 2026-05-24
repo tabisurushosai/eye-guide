@@ -1,10 +1,10 @@
 {
   "extName": { "message": "すーっと読める定規" },
-  "extDesc": { "message": "マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。" },
+  "extDesc": { "message": "マウスの位置に読書ラインを表示し、読み飛ばしを減らします。ディスレクシアや読みづらさの支援に。" },
   "onboardingTitle": { "message": "はじめて使うときは" },
-  "onboardingBody": { "message": "読みたいページでオンを押すと、マウスの位置に読書ラインが表示されます。" },
+  "onboardingBody": { "message": "読みたいページで「オン」を押すと、マウスの位置に読書ラインが表示されます。" },
   "onboardingHint": { "message": "迷ったら、初期設定のまま始められます。" },
-  "onboardingAction": { "message": "色や太さを確認して、まずはオンを押してください。表示後は Shift+Alt+上/下 でも移動できます。" },
+  "onboardingAction": { "message": "色や太さを確認して、まずは「オン」を押してください。表示後は Shift+Alt+↑/↓ キーでも移動できます。" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },
@@ -15,11 +15,11 @@
   "btnOn": { "message": "オン" },
   "btnOff": { "message": "オフ" },
   "labelPresets": { "message": "プリセット" },
-  "presetYellow": { "message": "黄色プリセットを選択" },
-  "presetGreen": { "message": "緑色プリセットを選択" },
-  "presetCyan": { "message": "シアンプリセットを選択" },
-  "presetMagenta": { "message": "マゼンタプリセットを選択" },
-  "labelAutoOn": { "message": "このサイトで自動的にオン" },
+  "presetYellow": { "message": "黄色のプリセットを選択" },
+  "presetGreen": { "message": "緑色のプリセットを選択" },
+  "presetCyan": { "message": "シアンのプリセットを選択" },
+  "presetMagenta": { "message": "マゼンタのプリセットを選択" },
+  "labelAutoOn": { "message": "このサイトでは自動的にオン" },
   "trialRemainingOne": {
     "message": "無料トライアルは残り$DAYS$日です",
     "placeholders": {
@@ -39,13 +39,21 @@
     }
   },
   "trialExpired": { "message": "無料トライアルは終了しました" },
-  "btnUpgrade": { "message": "Premium へアップグレード（US$3）" },
+  "btnUpgrade": {
+    "message": "Premium にアップグレード（$PRICE$）",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "3米ドル"
+      }
+    }
+  },
   "premiumStatusLoading": { "message": "Premium の状態を確認しています..." },
-  "premiumStatus": { "message": "Premiumが有効です" },
+  "premiumStatus": { "message": "Premium が有効です" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
   "statusReady": { "message": "設定を読み込みました" },
   "statusFirstUseEmpty": { "message": "まだ読書ラインは表示されていません。読みたいページで「オン」を押すと始まります。" },
-  "statusLineShown": { "message": "読書ラインを表示しました。キーボードでは Shift+Alt+上/下 で移動できます。" },
+  "statusLineShown": { "message": "読書ラインを表示しました。キーボードでは Shift+Alt+↑/↓ キーで移動できます。" },
   "statusLineHidden": { "message": "読書ラインを非表示にしました" },
   "statusUnavailable": { "message": "このページでは読書ラインを使用できません" }
 }
