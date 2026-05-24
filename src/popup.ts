@@ -1,6 +1,6 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
 import { formatInteger, formatPercent, formatPixels, normalizeLocale } from './core/format';
-import { shouldShowOnboardingGuide } from './core/onboarding';
+import { getInitialGuideState, type InitialGuideState } from './core/onboarding';
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
 import { chromeStorage } from './storage/chromeStorage';
@@ -21,6 +21,7 @@ const localize = () => {
     { id: 'title', key: 'extName' },
     { id: 'onboarding-title', key: 'onboardingTitle' },
     { id: 'onboarding-body', key: 'onboardingBody' },
+    { id: 'onboarding-hint', key: 'onboardingHint' },
     { id: 'onboarding-action', key: 'onboardingAction' },
     { id: 'label-color', key: 'labelColor' },
     { id: 'label-thickness', key: 'labelThickness' },
@@ -54,6 +55,11 @@ const localize = () => {
 const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
+
+const INITIAL_ACTION_STATUS_KEYS: Record<InitialGuideState['actionStatus'], string> = {
+  ready: 'statusReady',
+  firstUseEmpty: 'statusFirstUseEmpty'
+};
 
 const getElementById = <T extends HTMLElement>(id: string): T | null => {
   return document.getElementById(id) as T | null;
@@ -181,9 +187,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   setPremiumStatus(chrome.i18n.getMessage('premiumStatusLoading'), 'info', true);
   setActionStatus('statusLoading');
   updateRangeReadouts();
-  await loadInitialSettings();
+  const initialGuideState = await loadInitialSettings();
   const hasAccess = await checkPremium();
-  setActionStatus('statusReady');
+  setActionStatus(INITIAL_ACTION_STATUS_KEYS[initialGuideState.actionStatus]);
 
   // Auto ON logic
   const tab = await getActiveTab();
@@ -241,7 +247,8 @@ const updateContent = async (settings: Partial<Settings>) => {
 
 const loadInitialSettings = async () => {
   const data = await chromeStorage.read(['settings', 'autoOnSites']);
-  setOnboardingGuideVisible(shouldShowOnboardingGuide(data.settings));
+  const initialGuideState = getInitialGuideState(data.settings);
+  setOnboardingGuideVisible(initialGuideState.showOnboardingGuide);
 
   if (data.settings) {
     const colorEl = getElementById<HTMLInputElement>('color');
@@ -268,6 +275,8 @@ const loadInitialSettings = async () => {
     const autoOnEl = getElementById<HTMLInputElement>('auto-on');
     if (autoOnEl) autoOnEl.checked = isAutoOnSite(data.autoOnSites ?? [], hostname);
   }
+
+  return initialGuideState;
 };
 
 ['color', 'thickness', 'opacity', 'mode', 'auto-on'].forEach(id => {
