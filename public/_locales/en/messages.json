@@ -1,13 +1,13 @@
 {
   "extName": { "message": "Reading Ruler" },
-  "extDesc": { "message": "Displays a reading line at your cursor so it is easier to keep your place and avoid skipping lines." },
-  "onboardingTitle": { "message": "No reading line is shown on first open" },
-  "onboardingBody": { "message": "The empty state is expected. Keep the page you want to read open, then start from this panel." },
-  "onboardingStepPageTitle": { "message": "Stay on the page" },
+  "extDesc": { "message": "Shows a reading line at your cursor to help you keep your place and reduce skipped lines." },
+  "onboardingTitle": { "message": "The reading line is off on first open" },
+  "onboardingBody": { "message": "That is expected. Keep the page you want to read open, then select On in this panel." },
+  "onboardingStepPageTitle": { "message": "Keep the page open" },
   "onboardingStepPage": { "message": "Open this popup from the tab where you want to use the reading line." },
-  "onboardingStepOnTitle": { "message": "Try On" },
-  "onboardingStepOn": { "message": "You can adjust settings later, so select On below to start." },
-  "onboardingTip": { "message": "Quick guide: once shown, the line follows your mouse and can move step by step with Shift+Alt+Up/Down." },
+  "onboardingStepOnTitle": { "message": "Select On to try it" },
+  "onboardingStepOn": { "message": "You can adjust settings later. Select On below to start." },
+  "onboardingTip": { "message": "Tip: after it appears, the line follows your mouse. You can also move it in small steps with Shift+Alt+Up/Down." },
   "settingsTitle": { "message": "Reading line settings" },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
@@ -18,29 +18,37 @@
   "modeWindow": { "message": "Focus window" },
   "btnOn": { "message": "On" },
   "btnOff": { "message": "Off" },
-  "labelPresets": { "message": "Presets" },
+  "labelPresets": { "message": "Color presets" },
   "presetYellow": { "message": "Select the yellow preset" },
   "presetGreen": { "message": "Select the green preset" },
   "presetCyan": { "message": "Select the cyan preset" },
   "presetMagenta": { "message": "Select the magenta preset" },
   "presetKeyboardHelp": { "message": "Use the arrow, Home, and End keys to select a preset color." },
-  "labelAutoOn": { "message": "Turn on automatically on this site" },
-  "actionControlsLabel": { "message": "Reading line display controls" },
+  "labelAutoOn": { "message": "Turn on automatically for this site" },
+  "actionControlsLabel": { "message": "Reading line controls" },
   "trialRemainingOne": {
-    "message": "$DAYS$ day left in your free trial",
+    "message": "$DAYS$ day left in your free trial (until $DATE$).",
     "placeholders": {
       "days": {
         "content": "$1",
         "example": "1"
+      },
+      "date": {
+        "content": "$2",
+        "example": "May 31, 2026"
       }
     }
   },
   "trialRemainingMany": {
-    "message": "$DAYS$ days left in your free trial",
+    "message": "$DAYS$ days left in your free trial (until $DATE$).",
     "placeholders": {
       "days": {
         "content": "$1",
         "example": "7"
+      },
+      "date": {
+        "content": "$2",
+        "example": "May 31, 2026"
       }
     }
   },
@@ -58,8 +66,8 @@
   "premiumStatus": { "message": "Premium is active." },
   "statusLoading": { "message": "Loading settings..." },
   "statusReady": { "message": "Settings loaded." },
-  "statusFirstUseEmpty": { "message": "This first-open empty state is expected. Select On on the page you want to read to show the line." },
-  "statusLineShown": { "message": "Reading line shown. Use Shift+Alt+Up/Down to move it with the keyboard." },
+  "statusFirstUseEmpty": { "message": "The reading line is off on first open. Select On on the page you want to read to show it." },
+  "statusLineShown": { "message": "Reading line is on. Use Shift+Alt+Up/Down to move it with the keyboard." },
   "statusLineHidden": { "message": "Reading line hidden." },
   "statusUnavailable": { "message": "The reading line is not available on this page." }
 }

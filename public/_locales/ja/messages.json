@@ -1,14 +1,14 @@
 {
   "extName": { "message": "すーっと読める定規" },
-  "extDesc": { "message": "マウス位置に読書ラインを表示し、今読んでいる行を見失いにくくします。読み飛ばしや読みづらさの軽減を支援します。" },
-  "onboardingTitle": { "message": "初回は読書ラインがまだ表示されていません" },
-  "onboardingBody": { "message": "空の状態は正常です。読みたいページを開いたまま、このパネルから表示を始められます。" },
-  "onboardingStepPageTitle": { "message": "ページをそのままにする" },
-  "onboardingStepPage": { "message": "読書ラインを出したいタブで、このポップアップを開いておきます。" },
-  "onboardingStepOnTitle": { "message": "オンで試す" },
-  "onboardingStepOn": { "message": "設定はあとから変えられるので、まずは下の「オン」を押してください。" },
-  "onboardingTip": { "message": "ひとことガイド: 表示後のラインはマウス位置に追従し、Shift+Alt+↑/↓ キーでも少しずつ動かせます。" },
-  "settingsTitle": { "message": "読書ラインの設定" },
+  "extDesc": { "message": "マウス位置に読書ラインを表示し、今読んでいる行を見失いにくくします。読み飛ばしや読みづらさを軽減します。" },
+  "onboardingTitle": { "message": "初回は読書ラインがまだ表示されません" },
+  "onboardingBody": { "message": "空の状態は正常です。読みたいページを開いたまま、このパネルの「オン」から表示できます。" },
+  "onboardingStepPageTitle": { "message": "ページを開いたままにする" },
+  "onboardingStepPage": { "message": "読書ラインを使いたいタブで、このポップアップを開きます。" },
+  "onboardingStepOnTitle": { "message": "「オン」で試す" },
+  "onboardingStepOn": { "message": "設定はあとから変えられます。まずは下の「オン」を押してください。" },
+  "onboardingTip": { "message": "ワンポイント: 表示後のラインはマウス位置に追従し、Shift+Alt+↑/↓ キーでも少しずつ動かせます。" },
+  "settingsTitle": { "message": "読書ライン設定" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },
@@ -18,29 +18,37 @@
   "modeWindow": { "message": "集中窓" },
   "btnOn": { "message": "オン" },
   "btnOff": { "message": "オフ" },
-  "labelPresets": { "message": "プリセット" },
+  "labelPresets": { "message": "色プリセット" },
   "presetYellow": { "message": "黄色のプリセットを選択" },
   "presetGreen": { "message": "緑色のプリセットを選択" },
   "presetCyan": { "message": "シアンのプリセットを選択" },
   "presetMagenta": { "message": "マゼンタのプリセットを選択" },
-  "presetKeyboardHelp": { "message": "矢印キー、Home、End キーでプリセット色を選択できます。" },
-  "labelAutoOn": { "message": "このサイトで自動的にオン" },
+  "presetKeyboardHelp": { "message": "矢印キー、Home、Endキーでプリセット色を選択できます。" },
+  "labelAutoOn": { "message": "このサイトでは自動的にオン" },
   "actionControlsLabel": { "message": "読書ラインの表示操作" },
   "trialRemainingOne": {
-    "message": "無料トライアルは残り$DAYS$日です。",
+    "message": "無料トライアルは残り$DAYS$日です（$DATE$まで）。",
     "placeholders": {
       "days": {
         "content": "$1",
         "example": "1"
+      },
+      "date": {
+        "content": "$2",
+        "example": "2026/05/31"
       }
     }
   },
   "trialRemainingMany": {
-    "message": "無料トライアルは残り$DAYS$日です。",
+    "message": "無料トライアルは残り$DAYS$日です（$DATE$まで）。",
     "placeholders": {
       "days": {
         "content": "$1",
         "example": "7"
+      },
+      "date": {
+        "content": "$2",
+        "example": "2026/05/31"
       }
     }
   },
@@ -58,7 +66,7 @@
   "premiumStatus": { "message": "プレミアムは有効です。" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
   "statusReady": { "message": "設定を読み込みました。" },
-  "statusFirstUseEmpty": { "message": "初回は空の状態です。読みたいページで「オン」を押すと読書ラインが表示されます。" },
+  "statusFirstUseEmpty": { "message": "初回はまだ読書ラインを表示していません。読みたいページで「オン」を押すと表示されます。" },
   "statusLineShown": { "message": "読書ラインを表示しました。キーボードでは Shift+Alt+↑/↓ キーで移動できます。" },
   "statusLineHidden": { "message": "読書ラインを非表示にしました。" },
   "statusUnavailable": { "message": "このページでは読書ラインを使用できません。" }

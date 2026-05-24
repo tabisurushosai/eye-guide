@@ -4,6 +4,7 @@ const DAY_MS = 1000 * 60 * 60 * 24;
 
 export interface PremiumAccess {
   trialStart: number;
+  trialEnd: number;
   isPremium: boolean;
   remainingDays: number;
   isTrialActive: boolean;
@@ -18,6 +19,7 @@ export const getPremiumAccess = (
 ): PremiumAccess => {
   const shouldStoreTrialStart = !storedTrialStart;
   const trialStart = shouldStoreTrialStart ? now : Number(storedTrialStart);
+  const trialEnd = trialStart + TRIAL_DAYS * DAY_MS;
   const isPremium = storedIsPremium === true;
   const daysPassed = Math.floor((now - trialStart) / DAY_MS);
   const remainingDays = Math.max(0, TRIAL_DAYS - daysPassed);
@@ -25,6 +27,7 @@ export const getPremiumAccess = (
 
   return {
     trialStart,
+    trialEnd,
     isPremium,
     remainingDays,
     isTrialActive,
