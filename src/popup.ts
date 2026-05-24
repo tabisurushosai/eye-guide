@@ -15,6 +15,7 @@ const uiLocale = normalizeLocale(chrome.i18n.getUILanguage());
 
 const localize = () => {
   document.documentElement.lang = uiLocale;
+  document.title = chrome.i18n.getMessage('extName');
 
   const elements: LocalizeElement[] = [
     { id: 'title', key: 'extName' },

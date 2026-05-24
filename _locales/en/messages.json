@@ -2,23 +2,23 @@
   "extName": { "message": "Reading Ruler" },
   "extDesc": { "message": "Shows a reading guideline at your cursor to keep your place and reduce line-skipping." },
   "onboardingTitle": { "message": "First time here?" },
-  "onboardingBody": { "message": "Press ON on the page you want to read, and the reading line will follow your cursor." },
-  "onboardingAction": { "message": "Check the color and thickness, then press ON to start." },
+  "onboardingBody": { "message": "Open the page you want to read, then select On to show the reading line at your cursor." },
+  "onboardingAction": { "message": "Check the color and thickness, then select On to start." },
   "labelColor": { "message": "Color" },
   "labelThickness": { "message": "Thickness" },
   "labelOpacity": { "message": "Opacity" },
   "labelMode": { "message": "Mode" },
-  "modeHorizontal": { "message": "Horizontal" },
+  "modeHorizontal": { "message": "Horizontal band" },
   "modeUnderline": { "message": "Underline" },
   "modeWindow": { "message": "Focus window" },
-  "btnOn": { "message": "ON" },
-  "btnOff": { "message": "OFF" },
+  "btnOn": { "message": "On" },
+  "btnOff": { "message": "Off" },
   "labelPresets": { "message": "Presets" },
   "presetYellow": { "message": "Select yellow preset" },
   "presetGreen": { "message": "Select green preset" },
   "presetCyan": { "message": "Select cyan preset" },
   "presetMagenta": { "message": "Select magenta preset" },
-  "labelAutoOn": { "message": "Auto-on for this site" },
+  "labelAutoOn": { "message": "Turn on automatically on this site" },
   "trialRemainingOne": {
     "message": "$DAYS$ day left in free trial",
     "placeholders": {
@@ -37,13 +37,13 @@
       }
     }
   },
-  "trialExpired": { "message": "Free trial ended" },
+  "trialExpired": { "message": "Free trial has ended" },
   "btnUpgrade": { "message": "Upgrade to Premium (US$3)" },
   "premiumStatusLoading": { "message": "Checking Premium status..." },
   "premiumStatus": { "message": "Premium is active" },
   "statusLoading": { "message": "Loading settings..." },
   "statusReady": { "message": "Settings loaded" },
-  "statusLineShown": { "message": "Reading line shown" },
-  "statusLineHidden": { "message": "Reading line hidden" },
-  "statusUnavailable": { "message": "This page does not allow changes" }
+  "statusLineShown": { "message": "Reading line is shown" },
+  "statusLineHidden": { "message": "Reading line is hidden" },
+  "statusUnavailable": { "message": "The reading line cannot be used on this page" }
 }

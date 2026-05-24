@@ -2,8 +2,8 @@
   "extName": { "message": "すーっと読める定規" },
   "extDesc": { "message": "マウスの位置に読書ラインを表示し、行の読み飛ばしを防ぎます。ディスレクシアや読みづらさの支援に。" },
   "onboardingTitle": { "message": "はじめて使うときは" },
-  "onboardingBody": { "message": "読みたいページでONを押すと、マウスの位置に読書ラインが表示されます。" },
-  "onboardingAction": { "message": "色や太さを確認して、まずはONを押してください。" },
+  "onboardingBody": { "message": "読みたいページでオンを押すと、マウスの位置に読書ラインが表示されます。" },
+  "onboardingAction": { "message": "色や太さを確認して、まずはオンを押してください。" },
   "labelColor": { "message": "色" },
   "labelThickness": { "message": "太さ" },
   "labelOpacity": { "message": "不透明度" },
@@ -11,16 +11,16 @@
   "modeHorizontal": { "message": "横帯" },
   "modeUnderline": { "message": "下線" },
   "modeWindow": { "message": "集中窓" },
-  "btnOn": { "message": "ON" },
-  "btnOff": { "message": "OFF" },
+  "btnOn": { "message": "オン" },
+  "btnOff": { "message": "オフ" },
   "labelPresets": { "message": "プリセット" },
   "presetYellow": { "message": "黄色プリセットを選択" },
   "presetGreen": { "message": "緑色プリセットを選択" },
   "presetCyan": { "message": "シアンプリセットを選択" },
   "presetMagenta": { "message": "マゼンタプリセットを選択" },
-  "labelAutoOn": { "message": "このサイトで自動ON" },
+  "labelAutoOn": { "message": "このサイトで自動的にオン" },
   "trialRemainingOne": {
-    "message": "無料トライアルは残り $DAYS$ 日です",
+    "message": "無料トライアルは残り$DAYS$日です",
     "placeholders": {
       "days": {
         "content": "$1",
@@ -29,7 +29,7 @@
     }
   },
   "trialRemainingMany": {
-    "message": "無料トライアルは残り $DAYS$ 日です",
+    "message": "無料トライアルは残り$DAYS$日です",
     "placeholders": {
       "days": {
         "content": "$1",
@@ -38,12 +38,12 @@
     }
   },
   "trialExpired": { "message": "無料トライアルは終了しました" },
-  "btnUpgrade": { "message": "Premiumにアップグレード (US$3)" },
-  "premiumStatusLoading": { "message": "Premium状態を確認しています..." },
+  "btnUpgrade": { "message": "Premium へアップグレード（US$3）" },
+  "premiumStatusLoading": { "message": "Premium の状態を確認しています..." },
   "premiumStatus": { "message": "Premiumが有効です" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
   "statusReady": { "message": "設定を読み込みました" },
   "statusLineShown": { "message": "読書ラインを表示しました" },
   "statusLineHidden": { "message": "読書ラインを非表示にしました" },
-  "statusUnavailable": { "message": "このページでは操作できません" }
+  "statusUnavailable": { "message": "このページでは読書ラインを使用できません" }
 }

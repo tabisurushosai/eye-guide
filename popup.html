@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <title>すーっと読める定規</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
@@ -350,7 +351,7 @@
         <label id="label-thickness" for="thickness">太さ</label>
         <div class="range-control">
           <input type="range" id="thickness" min="1" max="100" value="4" aria-describedby="thickness-value">
-          <output id="thickness-value" for="thickness" aria-live="polite" aria-atomic="true">4 px</output>
+          <output id="thickness-value" for="thickness" aria-live="polite" aria-atomic="true">4px</output>
         </div>
       </div>
       <div class="setting-item">
@@ -369,13 +370,13 @@
         </select>
       </div>
       <div class="setting-item checkbox-row" id="auto-on-container">
-        <label id="label-auto-on" for="auto-on">このサイトで自動ON</label>
+        <label id="label-auto-on" for="auto-on">このサイトで自動的にオン</label>
         <input type="checkbox" id="auto-on">
       </div>
     </section>
     <div class="btn-group">
-      <button class="primary-btn" id="toggle-on" type="button">ON</button>
-      <button class="secondary-btn" id="toggle-off" type="button">OFF</button>
+      <button class="primary-btn" id="toggle-on" type="button">オン</button>
+      <button class="secondary-btn" id="toggle-off" type="button">オフ</button>
     </div>
     <div id="action-status" class="action-status" role="status" aria-live="polite" aria-atomic="true"></div>
     <div id="upgrade-container" class="upgrade-container">
