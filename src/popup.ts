@@ -150,10 +150,10 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
 };
 
 const checkPremium = async () => {
-  const data = await chromeStorage.get(['trial_start_ts', 'isPremium']);
+  const data = await chromeStorage.read(['trial_start_ts', 'isPremium']);
   const premiumAccess = getPremiumAccess(data.trial_start_ts, data.isPremium);
   if (premiumAccess.shouldStoreTrialStart) {
-    await chromeStorage.set({ trial_start_ts: premiumAccess.trialStart });
+    await chromeStorage.write({ trial_start_ts: premiumAccess.trialStart });
   }
 
   const upgradeContainer = getElementById<HTMLDivElement>('upgrade-container');
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tab = await getActiveTab();
   if (tab?.url && hasAccess) {
     const hostname = getHostnameFromUrl(tab.url);
-    const data = await chromeStorage.get('autoOnSites');
+    const data = await chromeStorage.read('autoOnSites');
     if (isAutoOnSite(data.autoOnSites ?? [], hostname)) {
       const autoOnEl = getElementById<HTMLInputElement>('auto-on');
       if (autoOnEl) autoOnEl.checked = true;
@@ -209,8 +209,8 @@ const getSettings = (): Settings => {
 
 const saveSettings = async (): Promise<Settings> => {
   const settings = getSettings();
-  const data = await chromeStorage.get('settings');
-  await chromeStorage.set({ settings: mergeSettingsForStorage(data.settings, settings) });
+  const data = await chromeStorage.read('settings');
+  await chromeStorage.write({ settings: mergeSettingsForStorage(data.settings, settings) });
   setOnboardingGuideVisible(false);
 
   // Handle autoOnSites
@@ -218,9 +218,9 @@ const saveSettings = async (): Promise<Settings> => {
   if (tab?.url) {
     const hostname = getHostnameFromUrl(tab.url);
     if (hostname) {
-      const storageData = await chromeStorage.get('autoOnSites');
+      const storageData = await chromeStorage.read('autoOnSites');
       const autoOnSites = updateAutoOnSites(storageData.autoOnSites ?? [], hostname, settings.autoOn);
-      await chromeStorage.set({ autoOnSites });
+      await chromeStorage.write({ autoOnSites });
     }
   }
 
@@ -239,7 +239,7 @@ const updateContent = async (settings: Partial<Settings>) => {
 };
 
 const loadInitialSettings = async () => {
-  const data = await chromeStorage.get(['settings', 'autoOnSites']);
+  const data = await chromeStorage.read(['settings', 'autoOnSites']);
   setOnboardingGuideVisible(shouldShowOnboardingGuide(data.settings));
 
   if (data.settings) {
