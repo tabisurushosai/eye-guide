@@ -73,6 +73,7 @@ const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
 
   statusEl.textContent = chrome.i18n.getMessage(messageKey);
   statusEl.dataset.tone = tone;
+  statusEl.toggleAttribute('aria-busy', messageKey === 'statusLoading');
 };
 
 const setOnboardingGuideVisible = (isVisible: boolean) => {
@@ -82,12 +83,13 @@ const setOnboardingGuideVisible = (isVisible: boolean) => {
   }
 };
 
-const setPremiumStatus = (message: string, state: StatusTone = 'info') => {
+const setPremiumStatus = (message: string, state: StatusTone = 'info', isBusy = false) => {
   const statusEl = getElementById('premium-status');
   if (!statusEl) return;
 
   statusEl.textContent = message;
   statusEl.dataset.state = state;
+  statusEl.toggleAttribute('aria-busy', isBusy);
 };
 
 const updateRangeReadouts = () => {
@@ -159,6 +161,7 @@ const checkPremium = async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   localize();
+  setPremiumStatus(chrome.i18n.getMessage('premiumStatusLoading'), 'info', true);
   setActionStatus('statusLoading');
   updateRangeReadouts();
   await loadInitialSettings();

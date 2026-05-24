@@ -39,6 +39,7 @@
   },
   "trialExpired": { "message": "無料トライアルは終了しました" },
   "btnUpgrade": { "message": "Premiumにアップグレード (US$3)" },
+  "premiumStatusLoading": { "message": "Premium状態を確認しています..." },
   "premiumStatus": { "message": "Premiumが有効です" },
   "statusLoading": { "message": "設定を読み込んでいます..." },
   "statusReady": { "message": "設定を読み込みました" },
