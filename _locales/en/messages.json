@@ -39,6 +39,7 @@
   },
   "trialExpired": { "message": "Free trial ended" },
   "btnUpgrade": { "message": "Upgrade to Premium (US$3)" },
+  "premiumStatusLoading": { "message": "Checking Premium status..." },
   "premiumStatus": { "message": "Premium is active" },
   "statusLoading": { "message": "Loading settings..." },
   "statusReady": { "message": "Settings loaded" },
