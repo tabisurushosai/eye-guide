@@ -63,6 +63,7 @@ const localize = () => {
 const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
+type StatusDatasetKey = 'state' | 'tone';
 
 const INITIAL_ACTION_STATUS: Record<InitialGuideState['actionStatus'], { messageKey: string; tone: StatusTone }> = {
   ready: { messageKey: 'statusReady', tone: 'success' },
@@ -82,29 +83,34 @@ const getActiveTab = async (): Promise<chrome.tabs.Tab | undefined> => {
   return tab;
 };
 
-const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
-  const statusEl = getElementById('action-status');
+const setStatusElement = (
+  elementId: string,
+  message: string,
+  datasetKey: StatusDatasetKey,
+  state: StatusTone,
+  isBusy: boolean
+): void => {
+  const statusEl = getElementById(elementId);
   if (!statusEl) return;
 
-  statusEl.textContent = chrome.i18n.getMessage(messageKey);
-  statusEl.dataset.tone = tone;
-  statusEl.toggleAttribute('aria-busy', messageKey === 'statusLoading');
+  statusEl.textContent = message;
+  statusEl.dataset[datasetKey] = state;
+  statusEl.toggleAttribute('aria-busy', isBusy);
 };
 
-const setOnboardingGuideVisible = (isVisible: boolean) => {
+const setActionStatus = (messageKey: string, tone: StatusTone = 'info'): void => {
+  setStatusElement('action-status', chrome.i18n.getMessage(messageKey), 'tone', tone, messageKey === 'statusLoading');
+};
+
+const setOnboardingGuideVisible = (isVisible: boolean): void => {
   const guideEl = getElementById('onboarding-guide');
   if (guideEl) {
     guideEl.hidden = !isVisible;
   }
 };
 
-const setPremiumStatus = (message: string, state: StatusTone = 'info', isBusy = false) => {
-  const statusEl = getElementById('premium-status');
-  if (!statusEl) return;
-
-  statusEl.textContent = message;
-  statusEl.dataset.state = state;
-  statusEl.toggleAttribute('aria-busy', isBusy);
+const setPremiumStatus = (message: string, state: StatusTone = 'info', isBusy = false): void => {
+  setStatusElement('premium-status', message, 'state', state, isBusy);
 };
 
 const syncPresetSelection = (selectedColor: string) => {
