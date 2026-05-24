@@ -11,7 +11,7 @@ export const formatInteger = (value: number, locale: SupportedLocale): string =>
   }).format(value);
 
 export const formatPixels = (value: number, locale: SupportedLocale): string =>
-  `${formatInteger(value, locale)} px`;
+  locale === 'ja' ? `${formatInteger(value, locale)}px` : `${formatInteger(value, locale)} px`;
 
 export const formatPercent = (value: number, locale: SupportedLocale): string =>
   new Intl.NumberFormat(locale, {
