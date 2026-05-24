@@ -92,6 +92,22 @@ const setPremiumStatus = (message: string, state: StatusTone = 'info', isBusy = 
   statusEl.toggleAttribute('aria-busy', isBusy);
 };
 
+const syncPresetSelection = (selectedColor: string) => {
+  const normalizedSelectedColor = selectedColor.toLowerCase();
+
+  document.querySelectorAll<HTMLButtonElement>('.preset-btn[data-color]').forEach((button) => {
+    const presetColor = button.dataset.color?.toLowerCase();
+    button.setAttribute('aria-pressed', String(presetColor === normalizedSelectedColor));
+  });
+};
+
+const syncPresetSelectionFromInput = () => {
+  const colorEl = getElementById<HTMLInputElement>('color');
+  if (colorEl) {
+    syncPresetSelection(colorEl.value);
+  }
+};
+
 const updateRangeReadouts = () => {
   const thicknessEl = getElementById<HTMLInputElement>('thickness');
   const thicknessValueEl = getElementById('thickness-value');
@@ -243,6 +259,7 @@ const loadInitialSettings = async () => {
     }
   }
   updateRangeReadouts();
+  syncPresetSelectionFromInput();
   
   const tab = await getActiveTab();
   if (tab?.url) {
@@ -255,6 +272,7 @@ const loadInitialSettings = async () => {
 ['color', 'thickness', 'opacity', 'mode', 'auto-on'].forEach(id => {
   getElementById(id)?.addEventListener('input', async () => {
     updateRangeReadouts();
+    syncPresetSelectionFromInput();
     const settings = await saveSettings();
     await updateContent(settings);
   });
@@ -268,6 +286,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
       const colorInput = getElementById<HTMLInputElement>('color');
       if (colorInput) {
         colorInput.value = color;
+        syncPresetSelection(color);
         const settings = await saveSettings();
         await updateContent(settings);
       }
