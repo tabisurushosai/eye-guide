@@ -8,12 +8,11 @@ export interface StorageValues {
 }
 
 export type StorageKey = keyof StorageValues;
+export type StorageReadKeys = StorageKey | readonly StorageKey[];
 export type StorageSnapshot = Partial<StorageValues>;
-export type StorageReadRequest = StorageKey | readonly StorageKey[];
-export type StorageReadResult<Key extends StorageKey> = Pick<StorageSnapshot, Key>;
+export type StorageWriteValues = StorageSnapshot;
 
 export interface StorageAdapter {
-  read<Key extends StorageKey>(key: Key): Promise<StorageReadResult<Key>>;
-  read<Key extends StorageKey>(keys: readonly Key[]): Promise<StorageReadResult<Key>>;
-  write(values: StorageSnapshot): Promise<void>;
+  read(keys: StorageReadKeys): Promise<StorageSnapshot>;
+  write(values: StorageWriteValues): Promise<void>;
 }
