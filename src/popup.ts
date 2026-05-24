@@ -1,5 +1,6 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
 import { formatInteger, formatPercent, formatPixels, normalizeLocale } from './core/format';
+import { shouldShowOnboardingGuide } from './core/onboarding';
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
 import { chromeStorage } from './storage/chromeStorage';
@@ -17,6 +18,9 @@ const localize = () => {
 
   const elements: LocalizeElement[] = [
     { id: 'title', key: 'extName' },
+    { id: 'onboarding-title', key: 'onboardingTitle' },
+    { id: 'onboarding-body', key: 'onboardingBody' },
+    { id: 'onboarding-action', key: 'onboardingAction' },
     { id: 'label-color', key: 'labelColor' },
     { id: 'label-thickness', key: 'labelThickness' },
     { id: 'label-opacity', key: 'labelOpacity' },
@@ -56,6 +60,13 @@ const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
 
   statusEl.textContent = chrome.i18n.getMessage(messageKey);
   statusEl.dataset.tone = tone;
+};
+
+const setOnboardingGuideVisible = (isVisible: boolean) => {
+  const guideEl = document.getElementById('onboarding-guide');
+  if (guideEl) {
+    guideEl.hidden = !isVisible;
+  }
 };
 
 const setPremiumStatus = (message: string, state: StatusTone = 'info') => {
@@ -168,6 +179,7 @@ const saveSettings = async (): Promise<Settings> => {
   const settings = getSettings();
   const data = await chromeStorage.get('settings');
   await chromeStorage.set({ settings: mergeSettingsForStorage(data.settings, settings) });
+  setOnboardingGuideVisible(false);
 
   // Handle autoOnSites
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -196,6 +208,8 @@ const updateContent = async (settings: Partial<Settings>) => {
 
 const loadInitialSettings = async () => {
   const data = await chromeStorage.get(['settings', 'autoOnSites']);
+  setOnboardingGuideVisible(shouldShowOnboardingGuide(data.settings));
+
   if (data.settings) {
     const colorEl = document.getElementById('color') as HTMLInputElement | null;
     if (colorEl && data.settings.color) colorEl.value = data.settings.color;
