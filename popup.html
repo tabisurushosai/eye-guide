@@ -7,27 +7,28 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #eef3f9;
+      --bg: #eaf0f8;
       --surface: #ffffff;
-      --surface-muted: #f4f7fb;
-      --text: #142033;
-      --muted: #43546a;
-      --border: #c7d2e2;
-      --divider: #e6edf6;
-      --primary: #245dcc;
-      --primary-strong: #1d4ea8;
+      --surface-muted: #f6f8fc;
+      --text: #111d2f;
+      --muted: #3d5068;
+      --border: #b8c7da;
+      --divider: #dfe7f1;
+      --primary: #205bc8;
+      --primary-strong: #184bab;
+      --primary-soft: #e8f0ff;
       --info-bg: #edf4ff;
-      --info-border: #bfd2f2;
-      --info-text: #1f4f9c;
-      --success-bg: #e7f6ee;
-      --success-border: #adddc0;
-      --success-text: #155f35;
-      --warning-bg: #fff4d6;
-      --warning-border: #e7c45f;
-      --warning-text: #6f4b00;
+      --info-border: #a9c2eb;
+      --info-text: #184b99;
+      --success-bg: #e6f6ef;
+      --success-border: #8dcca9;
+      --success-text: #0f5a32;
+      --warning-bg: #fff4cf;
+      --warning-border: #d9ae32;
+      --warning-text: #634200;
       --focus: #0b57d0;
       --control-shadow: 0 1px 2px rgba(20, 32, 51, 0.06);
-      --shadow: 0 14px 34px rgba(20, 32, 51, 0.09);
+      --shadow: 0 16px 38px rgba(17, 29, 47, 0.1);
     }
 
     * {
@@ -35,22 +36,24 @@
     }
 
     body {
-      width: 360px;
+      width: 376px;
       margin: 0;
-      padding: 16px;
-      background: var(--bg);
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0) 160px),
+        var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     h1 {
       margin: 0;
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 800;
       line-height: 1.25;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.005em;
     }
 
     button,
@@ -61,13 +64,14 @@
 
     button {
       min-height: 44px;
-      padding: 0 12px;
+      padding: 0 14px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--surface);
       color: var(--text);
       cursor: pointer;
       font-weight: 700;
+      letter-spacing: 0.01em;
       box-shadow: var(--control-shadow);
     }
 
@@ -87,30 +91,30 @@
     .panel {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .header {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 4px 4px 0;
+      gap: 7px;
+      padding: 2px 4px 0;
     }
 
     .subtitle {
       margin: 0;
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     .settings {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(184, 199, 218, 0.92);
+      border-radius: 18px;
       background: var(--surface);
       box-shadow: var(--shadow);
     }
@@ -126,23 +130,24 @@
       align-items: flex-start;
       gap: 10px;
       min-height: 44px;
-      padding: 11px 12px;
-      margin-bottom: 4px;
+      padding: 12px 13px;
+      margin-bottom: 6px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-left-width: 4px;
+      border-radius: 14px;
       background: var(--surface-muted);
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .status-card::before,
     .action-status::before {
       flex: 0 0 auto;
-      width: 9px;
-      height: 9px;
-      margin-top: 4px;
+      width: 10px;
+      height: 10px;
+      margin-top: 5px;
       border-radius: 999px;
       background: currentColor;
       content: "";
@@ -150,24 +155,26 @@
 
     .status-card[aria-busy="true"]::before,
     .action-status[aria-busy="true"]::before {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border: 2px solid currentColor;
+      border-top-color: transparent;
       background: transparent;
     }
 
     .onboarding-card {
-      padding: 14px;
+      padding: 15px;
       border: 1px solid var(--info-border);
-      border-radius: 14px;
+      border-left: 4px solid var(--primary);
+      border-radius: 16px;
       background: var(--info-bg);
       color: var(--text);
       box-shadow: var(--control-shadow);
     }
 
     .onboarding-card h2 {
-      margin: 0 0 6px;
-      font-size: 14px;
+      margin: 0 0 7px;
+      font-size: 15px;
       line-height: 1.35;
     }
 
@@ -175,13 +182,13 @@
       margin: 0;
       color: #40526a;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .onboarding-steps {
       display: grid;
-      gap: 6px;
-      margin: 10px 0 0;
+      gap: 8px;
+      margin: 12px 0 0;
       padding: 0;
       list-style: none;
     }
@@ -189,11 +196,11 @@
     .onboarding-steps li {
       display: grid;
       grid-template-columns: 22px 1fr;
-      gap: 8px;
+      gap: 10px;
       align-items: start;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border: 1px solid var(--info-border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.72);
       color: #2b3d55;
       font-size: 13px;
@@ -221,10 +228,10 @@
     }
 
     .onboarding-card .onboarding-tip {
-      margin-top: 10px;
-      padding: 9px 10px;
+      margin-top: 12px;
+      padding: 10px 11px;
       border: 1px solid var(--info-border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--surface);
       color: var(--primary-strong);
       font-weight: 700;
@@ -250,11 +257,11 @@
 
     .setting-item {
       display: grid;
-      grid-template-columns: minmax(108px, 0.9fr) minmax(0, 1.6fr);
+      grid-template-columns: minmax(112px, 0.92fr) minmax(0, 1.55fr);
       gap: 14px;
       align-items: center;
       min-height: 44px;
-      padding: 12px 0;
+      padding: 13px 0;
       border-top: 1px solid var(--divider);
     }
 
@@ -265,20 +272,20 @@
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .setting-item:focus-within {
       border-radius: 12px;
-      box-shadow: inset 0 0 0 2px rgba(11, 87, 208, 0.18);
+      box-shadow: inset 0 0 0 2px rgba(11, 87, 208, 0.16);
     }
 
     input[type="color"] {
       width: 100%;
       min-height: 44px;
-      padding: 3px;
+      padding: 4px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--surface);
       box-shadow: var(--control-shadow);
     }
@@ -286,9 +293,9 @@
     select {
       width: 100%;
       min-height: 44px;
-      padding: 7px 10px;
+      padding: 8px 11px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--surface);
       color: var(--text);
       font-weight: 600;
@@ -315,9 +322,9 @@
       justify-content: flex-end;
       min-height: 32px;
       padding: 5px 8px;
-      border: 1px solid var(--divider);
+      border: 1px solid var(--border);
       border-radius: 999px;
-      background: var(--surface-muted);
+      background: var(--primary-soft);
       color: var(--text);
       font-size: 13px;
       font-weight: 700;
@@ -350,7 +357,7 @@
       min-height: 48px;
       padding: 0;
       border: 2px solid #26364d;
-      border-radius: 9px;
+      border-radius: 11px;
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72), var(--control-shadow);
     }
 
@@ -396,14 +403,15 @@
       align-items: flex-start;
       gap: 10px;
       min-height: 44px;
-      padding: 11px 12px;
+      padding: 12px 13px;
       border: 1px solid var(--info-border);
-      border-radius: 12px;
+      border-left-width: 4px;
+      border-radius: 14px;
       background: var(--info-bg);
       color: var(--info-text);
       font-size: 13px;
       font-weight: 700;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .action-status[data-tone="success"] {
