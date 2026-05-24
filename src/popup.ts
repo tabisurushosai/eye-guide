@@ -54,8 +54,21 @@ const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
 
+const getElementById = <T extends HTMLElement>(id: string): T | null => {
+  return document.getElementById(id) as T | null;
+};
+
+const getRequiredElementById = <T extends HTMLElement>(id: string): T => {
+  return document.getElementById(id) as T;
+};
+
+const getActiveTab = async (): Promise<chrome.tabs.Tab | undefined> => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tab;
+};
+
 const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
-  const statusEl = document.getElementById('action-status');
+  const statusEl = getElementById('action-status');
   if (!statusEl) return;
 
   statusEl.textContent = chrome.i18n.getMessage(messageKey);
@@ -63,14 +76,14 @@ const setActionStatus = (messageKey: string, tone: StatusTone = 'info') => {
 };
 
 const setOnboardingGuideVisible = (isVisible: boolean) => {
-  const guideEl = document.getElementById('onboarding-guide');
+  const guideEl = getElementById('onboarding-guide');
   if (guideEl) {
     guideEl.hidden = !isVisible;
   }
 };
 
 const setPremiumStatus = (message: string, state: StatusTone = 'info') => {
-  const statusEl = document.getElementById('premium-status');
+  const statusEl = getElementById('premium-status');
   if (!statusEl) return;
 
   statusEl.textContent = message;
@@ -78,16 +91,16 @@ const setPremiumStatus = (message: string, state: StatusTone = 'info') => {
 };
 
 const updateRangeReadouts = () => {
-  const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
-  const thicknessValueEl = document.getElementById('thickness-value');
+  const thicknessEl = getElementById<HTMLInputElement>('thickness');
+  const thicknessValueEl = getElementById('thickness-value');
   if (thicknessEl && thicknessValueEl) {
     const thicknessText = formatPixels(Number.parseInt(thicknessEl.value, 10), uiLocale);
     thicknessValueEl.textContent = thicknessText;
     thicknessEl.setAttribute('aria-valuetext', thicknessText);
   }
 
-  const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
-  const opacityValueEl = document.getElementById('opacity-value');
+  const opacityEl = getElementById<HTMLInputElement>('opacity');
+  const opacityValueEl = getElementById('opacity-value');
   if (opacityEl && opacityValueEl) {
     const opacityText = formatPercent(Number.parseFloat(opacityEl.value), uiLocale);
     opacityValueEl.textContent = opacityText;
@@ -97,8 +110,8 @@ const updateRangeReadouts = () => {
 
 const setPremiumControlsAccess = (hasAccess: boolean) => {
   const premiumContainers = [
-    document.getElementById('presets-container'),
-    document.getElementById('auto-on-container')
+    getElementById('presets-container'),
+    getElementById('auto-on-container')
   ];
 
   premiumContainers.forEach((container) => {
@@ -112,7 +125,7 @@ const setPremiumControlsAccess = (hasAccess: boolean) => {
     button.disabled = !hasAccess;
   });
 
-  const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+  const autoOnEl = getElementById<HTMLInputElement>('auto-on');
   if (autoOnEl) {
     autoOnEl.disabled = !hasAccess;
   }
@@ -125,7 +138,7 @@ const checkPremium = async () => {
     await chromeStorage.set({ trial_start_ts: premiumAccess.trialStart });
   }
 
-  const upgradeContainer = document.getElementById('upgrade-container');
+  const upgradeContainer = getElementById<HTMLDivElement>('upgrade-container');
   
   if (premiumAccess.isPremium) {
     setPremiumStatus(chrome.i18n.getMessage('premiumStatus'), 'success');
@@ -153,25 +166,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   setActionStatus('statusReady');
 
   // Auto ON logic
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tab = await getActiveTab();
   if (tab?.url && hasAccess) {
     const hostname = getHostnameFromUrl(tab.url);
     const data = await chromeStorage.get('autoOnSites');
     if (isAutoOnSite(data.autoOnSites ?? [], hostname)) {
-      const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+      const autoOnEl = getElementById<HTMLInputElement>('auto-on');
       if (autoOnEl) autoOnEl.checked = true;
-      document.getElementById('toggle-on')?.click();
+      getElementById<HTMLButtonElement>('toggle-on')?.click();
     }
   }
 });
 
 const getSettings = (): Settings => {
   return {
-    color: (document.getElementById('color') as HTMLInputElement).value,
-    thickness: parseInt((document.getElementById('thickness') as HTMLInputElement).value),
-    opacity: parseFloat((document.getElementById('opacity') as HTMLInputElement).value),
-    mode: (document.getElementById('mode') as HTMLSelectElement).value as GuideMode,
-    autoOn: (document.getElementById('auto-on') as HTMLInputElement).checked
+    color: getRequiredElementById<HTMLInputElement>('color').value,
+    thickness: Number.parseInt(getRequiredElementById<HTMLInputElement>('thickness').value, 10),
+    opacity: Number.parseFloat(getRequiredElementById<HTMLInputElement>('opacity').value),
+    mode: getRequiredElementById<HTMLSelectElement>('mode').value as GuideMode,
+    autoOn: getRequiredElementById<HTMLInputElement>('auto-on').checked
   };
 };
 
@@ -182,7 +195,7 @@ const saveSettings = async (): Promise<Settings> => {
   setOnboardingGuideVisible(false);
 
   // Handle autoOnSites
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tab = await getActiveTab();
   if (tab?.url) {
     const hostname = getHostnameFromUrl(tab.url);
     if (hostname) {
@@ -196,11 +209,11 @@ const saveSettings = async (): Promise<Settings> => {
 };
 
 const updateContent = async (settings: Partial<Settings>) => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tab = await getActiveTab();
   if (tab?.id) {
     try {
       await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
-    } catch (e) {
+    } catch {
       // Content script might not be loaded yet
     }
   }
@@ -211,33 +224,33 @@ const loadInitialSettings = async () => {
   setOnboardingGuideVisible(shouldShowOnboardingGuide(data.settings));
 
   if (data.settings) {
-    const colorEl = document.getElementById('color') as HTMLInputElement | null;
+    const colorEl = getElementById<HTMLInputElement>('color');
     if (colorEl && data.settings.color) colorEl.value = data.settings.color;
-    const thicknessEl = document.getElementById('thickness') as HTMLInputElement | null;
+    const thicknessEl = getElementById<HTMLInputElement>('thickness');
     if (thicknessEl && data.settings.thickness !== undefined) {
       thicknessEl.value = String(data.settings.thickness);
     }
-    const opacityEl = document.getElementById('opacity') as HTMLInputElement | null;
+    const opacityEl = getElementById<HTMLInputElement>('opacity');
     if (opacityEl && data.settings.opacity !== undefined) {
       opacityEl.value = String(data.settings.opacity);
     }
     if (data.settings.mode) {
-      const modeEl = document.getElementById('mode') as HTMLSelectElement | null;
+      const modeEl = getElementById<HTMLSelectElement>('mode');
       if (modeEl) modeEl.value = data.settings.mode;
     }
   }
   updateRangeReadouts();
   
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tab = await getActiveTab();
   if (tab?.url) {
     const hostname = getHostnameFromUrl(tab.url);
-    const autoOnEl = document.getElementById('auto-on') as HTMLInputElement | null;
+    const autoOnEl = getElementById<HTMLInputElement>('auto-on');
     if (autoOnEl) autoOnEl.checked = isAutoOnSite(data.autoOnSites ?? [], hostname);
   }
 };
 
 ['color', 'thickness', 'opacity', 'mode', 'auto-on'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', async () => {
+  getElementById(id)?.addEventListener('input', async () => {
     updateRangeReadouts();
     const settings = await saveSettings();
     await updateContent(settings);
@@ -249,7 +262,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
   btn.addEventListener('click', async (e) => {
     const color = (e.currentTarget as HTMLButtonElement).dataset.color;
     if (color) {
-      const colorInput = document.getElementById('color') as HTMLInputElement | null;
+      const colorInput = getElementById<HTMLInputElement>('color');
       if (colorInput) {
         colorInput.value = color;
         const settings = await saveSettings();
@@ -259,12 +272,12 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
   });
 });
 
-document.getElementById('btn-upgrade')?.addEventListener('click', () => {
+getElementById<HTMLButtonElement>('btn-upgrade')?.addEventListener('click', () => {
   chrome.tabs.create({ url: STRIPE_URL });
 });
 
-document.getElementById('toggle-on')?.addEventListener('click', async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+getElementById<HTMLButtonElement>('toggle-on')?.addEventListener('click', async () => {
+  const tab = await getActiveTab();
   if (tab?.id) {
     const settings = await saveSettings();
     try {
@@ -272,14 +285,14 @@ document.getElementById('toggle-on')?.addEventListener('click', async () => {
         target: { tabId: tab.id },
         files: ['content.js']
       });
-    } catch (e) {
+    } catch {
       // Might already be injected or restricted page
     }
     try {
       await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
       await chrome.tabs.sendMessage(tab.id, { type: 'SHOW_LINE' });
       setActionStatus('statusLineShown', 'success');
-    } catch (e) {
+    } catch {
       setActionStatus('statusUnavailable', 'warning');
     }
   } else {
@@ -287,13 +300,13 @@ document.getElementById('toggle-on')?.addEventListener('click', async () => {
   }
 });
 
-document.getElementById('toggle-off')?.addEventListener('click', async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+getElementById<HTMLButtonElement>('toggle-off')?.addEventListener('click', async () => {
+  const tab = await getActiveTab();
   if (tab?.id) {
     try {
       await chrome.tabs.sendMessage(tab.id, { type: 'REMOVE_LINE' });
       setActionStatus('statusLineHidden', 'success');
-    } catch (e) {
+    } catch {
       setActionStatus('statusUnavailable', 'warning');
     }
   } else {
