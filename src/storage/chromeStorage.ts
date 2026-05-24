@@ -1,10 +1,14 @@
-import type { StorageAdapter, StorageData } from './types';
+import type { StorageAdapter, StorageReadRequest, StorageSnapshot } from './types';
+
+const toChromeStorageKeys = (keys: StorageReadRequest): string | string[] => {
+  return typeof keys === 'string' ? keys : [...keys];
+};
 
 export const chromeStorage: StorageAdapter = {
-  async get(keys) {
-    return chrome.storage.local.get(keys) as Promise<StorageData>;
+  async read(keys) {
+    return chrome.storage.local.get(toChromeStorageKeys(keys)) as Promise<StorageSnapshot>;
   },
-  async set(values) {
+  async write(values) {
     await chrome.storage.local.set(values);
   }
 };

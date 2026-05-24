@@ -18,6 +18,18 @@ export default tseslint.config(
     }
   },
   {
+    files: ['src/core/**/*.ts'],
+    rules: {
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'chrome',
+          message: 'Keep src/core platform-neutral. Use a storage adapter or platform entrypoint instead.'
+        }
+      ]
+    }
+  },
+  {
     files: ['vite.config.ts'],
     languageOptions: {
       globals: globals.node

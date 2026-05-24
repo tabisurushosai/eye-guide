@@ -1,15 +1,20 @@
 import type { Settings } from '../core/settings';
 
-export interface StorageData {
-  settings?: Partial<Settings>;
-  autoOnSites?: string[];
-  trial_start_ts?: number;
-  isPremium?: boolean;
+export const STORAGE_KEYS = ['settings', 'autoOnSites', 'trial_start_ts', 'isPremium'] as const;
+
+export type StorageKey = (typeof STORAGE_KEYS)[number];
+
+export interface StorageValues {
+  settings: Partial<Settings>;
+  autoOnSites: string[];
+  trial_start_ts: number;
+  isPremium: boolean;
 }
 
-export type StorageKey = keyof StorageData;
+export type StorageSnapshot = Partial<StorageValues>;
+export type StorageReadRequest = StorageKey | readonly StorageKey[];
 
 export interface StorageAdapter {
-  get(keys: StorageKey | StorageKey[]): Promise<StorageData>;
-  set(values: StorageData): Promise<void>;
+  read(keys: StorageReadRequest): Promise<StorageSnapshot>;
+  write(values: StorageSnapshot): Promise<void>;
 }
