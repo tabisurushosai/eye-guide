@@ -5,6 +5,24 @@ const LINE_ID = 'eye-guide-line';
 
 let currentSettings: Settings = normalizeSettings();
 
+type EyeGuideWindow = Window & {
+  eyeGuideInjected?: boolean;
+  showLine?: typeof showLine;
+  removeLine?: typeof removeLine;
+  updateSettings?: typeof updateSettings;
+};
+
+type EyeGuideMessage = {
+  type?: unknown;
+  settings?: Partial<Settings>;
+};
+
+const eyeGuideWindow = window as EyeGuideWindow;
+
+const isEyeGuideMessage = (message: unknown): message is EyeGuideMessage => {
+  return typeof message === 'object' && message !== null;
+};
+
 const handleMouseMove = (e: MouseEvent) => {
   const el = document.getElementById(LINE_ID);
   if (el) {
@@ -52,11 +70,15 @@ export function removeLine() {
 }
 
 // Avoid duplicate listeners on multiple injections
-if (!(window as any).eyeGuideInjected) {
-  (window as any).eyeGuideInjected = true;
-  chrome.runtime.onMessage.addListener((message) => {
+if (!eyeGuideWindow.eyeGuideInjected) {
+  eyeGuideWindow.eyeGuideInjected = true;
+  chrome.runtime.onMessage.addListener((message: unknown) => {
+    if (!isEyeGuideMessage(message)) {
+      return;
+    }
+
     if (message.type === 'UPDATE_SETTINGS') {
-      updateSettings(message.settings);
+      updateSettings(message.settings ?? {});
     } else if (message.type === 'SHOW_LINE') {
       showLine();
     } else if (message.type === 'REMOVE_LINE') {
@@ -65,6 +87,6 @@ if (!(window as any).eyeGuideInjected) {
   });
 }
 
-(window as any).showLine = showLine;
-(window as any).removeLine = removeLine;
-(window as any).updateSettings = updateSettings;
+eyeGuideWindow.showLine = showLine;
+eyeGuideWindow.removeLine = removeLine;
+eyeGuideWindow.updateSettings = updateSettings;
