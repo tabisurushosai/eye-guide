@@ -160,9 +160,19 @@
       font-size: 13px;
     }
 
-    .onboarding-card .onboarding-hint {
-      margin-top: 6px;
+    .onboarding-card .onboarding-route {
+      margin-top: 8px;
       color: #2b3d55;
+      font-weight: 700;
+    }
+
+    .onboarding-card .onboarding-tip {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--info-border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--primary-strong);
       font-weight: 700;
     }
 
@@ -375,10 +385,11 @@
       <h1 id="title"></h1>
       <p id="subtitle" class="subtitle"></p>
     </header>
-    <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" hidden>
+    <section id="onboarding-guide" class="onboarding-card" aria-labelledby="onboarding-title" aria-describedby="onboarding-body onboarding-route onboarding-tip onboarding-action" hidden>
       <h2 id="onboarding-title"></h2>
       <p id="onboarding-body"></p>
-      <p id="onboarding-hint" class="onboarding-hint"></p>
+      <p id="onboarding-route" class="onboarding-route"></p>
+      <p id="onboarding-tip" class="onboarding-tip"></p>
       <p id="onboarding-action" class="onboarding-action"></p>
     </section>
     <section class="settings" aria-labelledby="title" aria-describedby="subtitle">
