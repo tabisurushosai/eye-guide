@@ -1,5 +1,6 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
 import { formatInteger, formatPercent, formatPixels, formatUsdAmount, normalizeLocale } from './core/format';
+import { MESSAGE_TYPES, type EyeGuideMessage } from './core/messages';
 import { getInitialGuideState, type InitialGuideState } from './core/onboarding';
 import { getPremiumAccess } from './core/premium';
 import { mergeSettingsForStorage, type GuideMode, type Settings } from './core/settings';
@@ -243,7 +244,8 @@ const updateContent = async (settings: Partial<Settings>) => {
   const tab = await getActiveTab();
   if (tab?.id) {
     try {
-      await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
+      const message: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
+      await chrome.tabs.sendMessage(tab.id, message);
     } catch {
       // Content script might not be loaded yet
     }
@@ -326,8 +328,10 @@ getElementById<HTMLButtonElement>('toggle-on')?.addEventListener('click', async 
       // Might already be injected or restricted page
     }
     try {
-      await chrome.tabs.sendMessage(tab.id, { type: 'UPDATE_SETTINGS', settings });
-      await chrome.tabs.sendMessage(tab.id, { type: 'SHOW_LINE' });
+      const updateMessage: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
+      const showMessage: EyeGuideMessage = { type: MESSAGE_TYPES.showLine };
+      await chrome.tabs.sendMessage(tab.id, updateMessage);
+      await chrome.tabs.sendMessage(tab.id, showMessage);
       setActionStatus('statusLineShown', 'success');
     } catch {
       setActionStatus('statusUnavailable', 'warning');
@@ -341,7 +345,8 @@ getElementById<HTMLButtonElement>('toggle-off')?.addEventListener('click', async
   const tab = await getActiveTab();
   if (tab?.id) {
     try {
-      await chrome.tabs.sendMessage(tab.id, { type: 'REMOVE_LINE' });
+      const message: EyeGuideMessage = { type: MESSAGE_TYPES.removeLine };
+      await chrome.tabs.sendMessage(tab.id, message);
       setActionStatus('statusLineHidden', 'success');
     } catch {
       setActionStatus('statusUnavailable', 'warning');
