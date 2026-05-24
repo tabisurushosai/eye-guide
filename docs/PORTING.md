@@ -13,10 +13,12 @@ eye-guide is currently packaged as a Chrome MV3 extension, but the code should k
 
 `StorageAdapter` exposes two platform-neutral operations:
 
-- `read(keys)`: load one storage key or a readonly list of storage keys.
+- `read(keys)`: load one storage key or a readonly list of storage keys and resolve a partial `StorageSnapshot`.
 - `write(values)`: persist a partial snapshot of known storage values.
 
-Adapters must keep the key names below unchanged. Platform-specific adapters may translate `read`/`write` to Chrome storage, iOS local storage, Android shared preferences, or another local persistence mechanism, but they should not change the serialized value shapes.
+Adapters must keep the key names below unchanged. Platform-specific adapters may translate `read`/`write` to Chrome storage, iOS local storage, Android shared preferences, or another local persistence mechanism, but they should not change the serialized value shapes. Missing values should stay omitted/`undefined`; callers in the UI shell should apply defaults with `src/core` helpers instead of storing platform-specific fallback objects.
+
+Adapter implementations should not expose platform handles, promises from native SDKs with non-standard behavior, or UI objects through `StorageValues`. Keep those details inside the adapter and return plain JSON-compatible values.
 
 ## Storage compatibility
 
@@ -32,6 +34,7 @@ Mobile ports should implement the same `StorageAdapter` contract with local devi
 ## Mobile porting notes
 
 - Reuse `src/core` functions for settings merging, trial access calculation, color conversion, and site matching.
-- Replace Chrome-only adapters and entrypoints with platform shells that call the same core functions.
+- Replace Chrome-only adapters and entrypoints with platform shells that call the same core functions. For iOS/Android, inject a platform `StorageAdapter` into the app UI/controller layer rather than importing native persistence from `src/core`.
+- Keep `src/core` one-way: it may define reusable logic and types, but it must not import `src/storage`, Chrome APIs, DOM globals, or mobile SDKs.
 - Keep the app fully offline unless a future product decision explicitly changes the privacy model and permissions.
 - Do not add extension permissions, remote code loading, external CDNs, or external fonts for the Chrome build while preparing portability changes.

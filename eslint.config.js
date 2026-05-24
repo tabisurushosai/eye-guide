@@ -26,6 +26,17 @@ export default tseslint.config(
           name: 'chrome',
           message: 'Keep src/core platform-neutral. Use a storage adapter or platform entrypoint instead.'
         }
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../storage/*', '../../storage/*', 'src/storage/*'],
+              message: 'Keep src/core independent from storage adapters and platform persistence.'
+            }
+          ]
+        }
       ]
     }
   },
