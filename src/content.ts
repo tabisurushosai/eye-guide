@@ -2,8 +2,10 @@ import { hexToRgba } from './core/color';
 import { normalizeSettings, type Settings } from './core/settings';
 
 const LINE_ID = 'eye-guide-line';
+const KEYBOARD_MOVE_STEP_PX = 16;
 
 let currentSettings: Settings = normalizeSettings();
+let currentLineTop = Math.round(window.innerHeight / 2);
 
 type EyeGuideWindow = Window & {
   eyeGuideInjected?: boolean;
@@ -23,11 +25,38 @@ const isEyeGuideMessage = (message: unknown): message is EyeGuideMessage => {
   return typeof message === 'object' && message !== null;
 };
 
-const handleMouseMove = (e: MouseEvent) => {
+const getClampedLineTop = (top: number) => {
+  return Math.max(0, Math.min(window.innerHeight, top));
+};
+
+const setLineTop = (top: number) => {
+  currentLineTop = getClampedLineTop(top);
   const el = document.getElementById(LINE_ID);
   if (el) {
-    el.style.top = `${e.clientY}px`;
+    el.style.top = `${currentLineTop}px`;
   }
+};
+
+const handleMouseMove = (e: MouseEvent) => {
+  setLineTop(e.clientY);
+};
+
+const handleKeyboardMove = (e: KeyboardEvent) => {
+  if (!e.altKey || !e.shiftKey || e.ctrlKey || e.metaKey || e.isComposing) {
+    return;
+  }
+
+  if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
+    return;
+  }
+
+  e.preventDefault();
+  const direction = e.key === 'ArrowUp' ? -1 : 1;
+  setLineTop(currentLineTop + direction * KEYBOARD_MOVE_STEP_PX);
+};
+
+const handleResize = () => {
+  setLineTop(currentLineTop);
 };
 
 export function updateSettings(settings: Partial<Settings>) {
@@ -54,11 +83,15 @@ export function showLine() {
   lineElement.style.width = '100%';
   lineElement.style.pointerEvents = 'none';
   lineElement.style.zIndex = '2147483647';
-  lineElement.style.top = '50%';
+  lineElement.setAttribute('aria-hidden', 'true');
+  setLineTop(currentLineTop);
 
   document.body.appendChild(lineElement);
+  setLineTop(currentLineTop);
   updateSettings({}); // Apply initial styles via updateSettings
   document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('keydown', handleKeyboardMove);
+  window.addEventListener('resize', handleResize);
 }
 
 export function removeLine() {
@@ -67,6 +100,8 @@ export function removeLine() {
     el.remove();
   }
   document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('keydown', handleKeyboardMove);
+  window.removeEventListener('resize', handleResize);
 }
 
 // Avoid duplicate listeners on multiple injections
