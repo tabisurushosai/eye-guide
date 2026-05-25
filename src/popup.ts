@@ -67,12 +67,20 @@ const localize = () => {
 const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
+type StatusVisualState = StatusTone | 'loading';
 type StatusDatasetKey = 'state' | 'tone';
 type TabWithId = chrome.tabs.Tab & { id: number };
 
 const INITIAL_ACTION_STATUS: Record<InitialGuideState['actionStatus'], { messageKey: string; tone: StatusTone }> = {
   ready: { messageKey: 'statusReady', tone: 'success' },
   firstUseEmpty: { messageKey: 'statusFirstUseEmpty', tone: 'info' }
+};
+
+const STATUS_LABEL_KEYS: Record<StatusVisualState, string> = {
+  loading: 'statusLabelLoading',
+  info: 'statusLabelInfo',
+  success: 'statusLabelSuccess',
+  warning: 'statusLabelWarning'
 };
 
 const getElementById = <T extends HTMLElement>(id: string): T | null => {
@@ -116,8 +124,21 @@ const setStatusElement = (
   const statusEl = getElementById(elementId);
   if (!statusEl) return;
 
-  statusEl.textContent = message;
+  const messageEl = statusEl.querySelector<HTMLElement>('.status-message');
+  if (messageEl) {
+    messageEl.textContent = message;
+  } else {
+    statusEl.textContent = message;
+  }
+
+  const visualState: StatusVisualState = isBusy ? 'loading' : state;
+  const labelEl = statusEl.querySelector<HTMLElement>('.status-label');
+  if (labelEl) {
+    labelEl.textContent = chrome.i18n.getMessage(STATUS_LABEL_KEYS[visualState]);
+  }
+
   statusEl.dataset[datasetKey] = state;
+  statusEl.dataset.visualState = visualState;
   statusEl.toggleAttribute('aria-busy', isBusy);
 };
 
