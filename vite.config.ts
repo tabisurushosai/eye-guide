@@ -34,6 +34,7 @@ export default defineConfig({
   build: {
     outDir,
     emptyOutDir: true,
+    copyPublicDir: true,
     rollupOptions: {
       input: {
         content: resolve(__dirname, "src/content.ts"),
