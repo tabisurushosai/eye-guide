@@ -68,6 +68,7 @@ const STRIPE_URL = 'https://checkout.stripe.com/pay/eye-guide-premium';
 
 type StatusTone = 'info' | 'success' | 'warning';
 type StatusDatasetKey = 'state' | 'tone';
+type TabWithId = chrome.tabs.Tab & { id: number };
 
 const INITIAL_ACTION_STATUS: Record<InitialGuideState['actionStatus'], { messageKey: string; tone: StatusTone }> = {
   ready: { messageKey: 'statusReady', tone: 'success' },
@@ -79,12 +80,30 @@ const getElementById = <T extends HTMLElement>(id: string): T | null => {
 };
 
 const getRequiredElementById = <T extends HTMLElement>(id: string): T => {
-  return document.getElementById(id) as T;
+  const element = document.getElementById(id);
+  if (!element) {
+    throw new Error(`Missing required element: ${id}`);
+  }
+
+  return element as T;
 };
 
 const getActiveTab = async (): Promise<chrome.tabs.Tab | undefined> => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab;
+};
+
+const hasTabId = (tab: chrome.tabs.Tab | undefined): tab is TabWithId => {
+  return typeof tab?.id === 'number';
+};
+
+const trySendEyeGuideMessage = async (tabId: number, message: EyeGuideMessage): Promise<boolean> => {
+  try {
+    await chrome.tabs.sendMessage(tabId, message);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const setStatusElement = (
@@ -270,13 +289,9 @@ const saveSettings = async (): Promise<Settings> => {
 
 const updateContent = async (settings: Partial<Settings>) => {
   const tab = await getActiveTab();
-  if (tab?.id) {
-    try {
-      const message: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
-      await chrome.tabs.sendMessage(tab.id, message);
-    } catch {
-      // Content script might not be loaded yet
-    }
+  if (hasTabId(tab)) {
+    const message: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
+    await trySendEyeGuideMessage(tab.id, message);
   }
 };
 
@@ -384,7 +399,7 @@ getElementById<HTMLButtonElement>('btn-upgrade')?.addEventListener('click', () =
 
 getElementById<HTMLButtonElement>('toggle-on')?.addEventListener('click', async () => {
   const tab = await getActiveTab();
-  if (tab?.id) {
+  if (hasTabId(tab)) {
     const settings = await saveSettings();
     try {
       await chrome.scripting.executeScript({
@@ -394,13 +409,14 @@ getElementById<HTMLButtonElement>('toggle-on')?.addEventListener('click', async 
     } catch {
       // Might already be injected or restricted page
     }
-    try {
-      const updateMessage: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
-      const showMessage: EyeGuideMessage = { type: MESSAGE_TYPES.showLine };
-      await chrome.tabs.sendMessage(tab.id, updateMessage);
-      await chrome.tabs.sendMessage(tab.id, showMessage);
+    const updateMessage: EyeGuideMessage = { type: MESSAGE_TYPES.updateSettings, settings };
+    const showMessage: EyeGuideMessage = { type: MESSAGE_TYPES.showLine };
+    if (
+      await trySendEyeGuideMessage(tab.id, updateMessage)
+      && await trySendEyeGuideMessage(tab.id, showMessage)
+    ) {
       setActionStatus('statusLineShown', 'success');
-    } catch {
+    } else {
       setActionStatus('statusUnavailable', 'warning');
     }
   } else {
@@ -410,12 +426,11 @@ getElementById<HTMLButtonElement>('toggle-on')?.addEventListener('click', async 
 
 getElementById<HTMLButtonElement>('toggle-off')?.addEventListener('click', async () => {
   const tab = await getActiveTab();
-  if (tab?.id) {
-    try {
-      const message: EyeGuideMessage = { type: MESSAGE_TYPES.removeLine };
-      await chrome.tabs.sendMessage(tab.id, message);
+  if (hasTabId(tab)) {
+    const message: EyeGuideMessage = { type: MESSAGE_TYPES.removeLine };
+    if (await trySendEyeGuideMessage(tab.id, message)) {
       setActionStatus('statusLineHidden', 'success');
-    } catch {
+    } else {
       setActionStatus('statusUnavailable', 'warning');
     }
   } else {
