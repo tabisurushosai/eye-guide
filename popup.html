@@ -30,6 +30,7 @@
       --focus-shadow: rgba(11, 87, 208, 0.22);
       --control-shadow: 0 1px 2px rgba(20, 32, 51, 0.06);
       --shadow: 0 16px 38px rgba(17, 29, 47, 0.1);
+      --target-size: 52px;
     }
 
     * {
@@ -66,8 +67,8 @@
     }
 
     button {
-      min-height: 48px;
-      padding: 0 16px;
+      min-height: var(--target-size);
+      padding: 0 18px;
       border: 1px solid var(--border);
       border-radius: 12px;
       background: var(--surface);
@@ -76,6 +77,7 @@
       font-weight: 700;
       letter-spacing: 0.01em;
       box-shadow: var(--control-shadow);
+      touch-action: manipulation;
     }
 
     button:disabled {
@@ -88,7 +90,7 @@
     select:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 3px;
-      box-shadow: 0 0 0 4px var(--focus-shadow);
+      box-shadow: 0 0 0 5px var(--focus-shadow);
     }
 
     .sr-only {
@@ -306,7 +308,7 @@
       grid-template-columns: minmax(112px, 0.92fr) minmax(0, 1.55fr);
       gap: 14px;
       align-items: center;
-      min-height: 48px;
+      min-height: var(--target-size);
       padding: 13px 0;
       border-top: 1px solid var(--divider);
     }
@@ -315,11 +317,15 @@
     .setting-label {
       display: flex;
       align-items: center;
-      min-height: 48px;
+      min-height: var(--target-size);
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
       line-height: 1.35;
+    }
+
+    .setting-item label {
+      cursor: pointer;
     }
 
     .setting-item:focus-within {
@@ -329,7 +335,7 @@
 
     input[type="color"] {
       width: 100%;
-      min-height: 48px;
+      min-height: var(--target-size);
       padding: 4px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -339,7 +345,7 @@
 
     select {
       width: 100%;
-      min-height: 48px;
+      min-height: var(--target-size);
       padding: 8px 11px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -358,9 +364,10 @@
 
     input[type="range"] {
       width: 100%;
-      min-height: 48px;
+      min-height: var(--target-size);
       margin: 0;
       accent-color: var(--primary);
+      touch-action: pan-x;
     }
 
     output {
@@ -384,8 +391,8 @@
     }
 
     input[type="checkbox"] {
-      width: 48px;
-      height: 48px;
+      width: var(--target-size);
+      height: var(--target-size);
       margin: 0;
       accent-color: var(--primary);
       justify-self: start;
@@ -400,8 +407,8 @@
     .preset-btn {
       min-width: 0;
       width: 100%;
-      height: 52px;
-      min-height: 52px;
+      height: 56px;
+      min-height: 56px;
       padding: 0;
       border: 2px solid #26364d;
       border-radius: 11px;
@@ -411,6 +418,16 @@
     .preset-btn[aria-checked="true"] {
       border-color: var(--text);
       box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 5px var(--text), var(--control-shadow);
+    }
+
+    .preset-btn:focus-visible {
+      outline: 4px solid var(--focus);
+      outline-offset: 4px;
+      box-shadow: inset 0 0 0 2px var(--surface), 0 0 0 6px var(--focus-shadow);
+    }
+
+    .preset-btn[aria-checked="true"]:focus-visible {
+      box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 5px var(--text), 0 0 0 6px var(--focus-shadow);
     }
 
     .btn-group {
@@ -494,6 +511,23 @@
         outline-offset: 2px;
       }
     }
+
+    @media (prefers-contrast: more) {
+      :root {
+        --border: #66758a;
+        --divider: #8a98aa;
+        --focus-shadow: rgba(11, 87, 208, 0.36);
+      }
+
+      button,
+      input[type="color"],
+      select,
+      .status-card,
+      .action-status,
+      .onboarding-card {
+        border-width: 2px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -536,7 +570,7 @@
       </div>
       <div class="setting-item" id="presets-container">
         <span id="label-presets" class="setting-label">色プリセット</span>
-        <div id="preset-group" class="presets" role="radiogroup" aria-labelledby="label-presets" aria-describedby="preset-help">
+        <div id="preset-group" class="presets" role="radiogroup" aria-orientation="horizontal" aria-labelledby="label-presets" aria-describedby="preset-help">
           <button class="preset-btn" type="button" role="radio" data-color="#ffff00" data-label-key="presetYellow" style="background:#ffff00" aria-label="黄色のプリセットを選択" aria-checked="true" tabindex="0"></button>
           <button class="preset-btn" type="button" role="radio" data-color="#00ff00" data-label-key="presetGreen" style="background:#00ff00" aria-label="緑色のプリセットを選択" aria-checked="false" tabindex="-1"></button>
           <button class="preset-btn" type="button" role="radio" data-color="#00ffff" data-label-key="presetCyan" style="background:#00ffff" aria-label="シアンのプリセットを選択" aria-checked="false" tabindex="-1"></button>
@@ -573,8 +607,9 @@
     </section>
     <div class="btn-group" role="group" aria-labelledby="action-controls-label">
       <span id="action-controls-label" class="sr-only">読書ラインの表示操作</span>
-      <button class="primary-btn" id="toggle-on" type="button" aria-describedby="action-status">オン</button>
-      <button class="secondary-btn" id="toggle-off" type="button" aria-describedby="action-status">オフ</button>
+      <p id="action-keyboard-help" class="sr-only">表示後は Shift+Alt+上矢印/下矢印キーで読書ラインを移動できます。</p>
+      <button class="primary-btn" id="toggle-on" type="button" aria-describedby="action-status action-keyboard-help">オン</button>
+      <button class="secondary-btn" id="toggle-off" type="button" aria-describedby="action-status action-keyboard-help">オフ</button>
     </div>
     <div id="action-status" class="action-status" data-tone="info" data-visual-state="loading" role="status" aria-live="polite" aria-atomic="true" aria-busy="true">
       <span class="status-message">設定を読み込んでいます...</span>

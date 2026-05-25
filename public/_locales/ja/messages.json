@@ -27,6 +27,7 @@
   "presetKeyboardHelp": { "message": "矢印キー、Home、Endキーでプリセット色を選択できます。" },
   "labelAutoOn": { "message": "このサイトでは自動的にオン" },
   "actionControlsLabel": { "message": "読書ラインの表示操作" },
+  "actionKeyboardHelp": { "message": "表示後は Shift+Alt+上矢印/下矢印キーで読書ラインを移動できます。" },
   "trialRemainingOne": {
     "message": "無料トライアルは残り$DAYS$日です（$DATE$まで）。",
     "placeholders": {
