@@ -27,6 +27,7 @@
   "presetKeyboardHelp": { "message": "Use the arrow, Home, and End keys to select a preset color." },
   "labelAutoOn": { "message": "Turn on automatically for this site" },
   "actionControlsLabel": { "message": "Reading line controls" },
+  "actionKeyboardHelp": { "message": "After the line appears, move it with Shift+Alt+Up/Down." },
   "trialRemainingOne": {
     "message": "$DAYS$ day left in your free trial (until $DATE$).",
     "placeholders": {

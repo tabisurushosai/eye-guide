@@ -46,6 +46,7 @@ const localize = () => {
     { id: 'preset-help', key: 'presetKeyboardHelp' },
     { id: 'label-auto-on', key: 'labelAutoOn' },
     { id: 'action-controls-label', key: 'actionControlsLabel' },
+    { id: 'action-keyboard-help', key: 'actionKeyboardHelp' },
     { id: 'btn-upgrade', key: 'btnUpgrade', substitutions: [formatUsdAmount(PREMIUM_PRICE_USD, uiLocale)] }
   ];
 
