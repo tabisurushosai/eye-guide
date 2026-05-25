@@ -19,5 +19,10 @@ export const formatPercent = (value: number, locale: SupportedLocale): string =>
     maximumFractionDigits: 0
   }).format(value);
 
+export const formatDate = (value: number | Date, locale: SupportedLocale): string =>
+  new Intl.DateTimeFormat(locale, {
+    dateStyle: 'medium'
+  }).format(value);
+
 export const formatUsdAmount = (value: number, locale: SupportedLocale): string =>
   `US$${formatInteger(value, locale)}`;

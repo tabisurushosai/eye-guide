@@ -1,5 +1,5 @@
 import { getHostnameFromUrl, isAutoOnSite, updateAutoOnSites } from './core/autoOnSites';
-import { formatInteger, formatPercent, formatPixels, formatUsdAmount, normalizeLocale } from './core/format';
+import { formatDate, formatInteger, formatPercent, formatPixels, formatUsdAmount, normalizeLocale } from './core/format';
 import { MESSAGE_TYPES, type EyeGuideMessage } from './core/messages';
 import { getInitialGuideState, type InitialGuideState } from './core/onboarding';
 import { getPremiumAccess } from './core/premium';
@@ -199,7 +199,10 @@ const checkPremium = async () => {
     if (upgradeContainer) upgradeContainer.style.display = 'none';
   } else if (premiumAccess.isTrialActive) {
     const trialMessageKey = premiumAccess.remainingDays === 1 ? 'trialRemainingOne' : 'trialRemainingMany';
-    setPremiumStatus(chrome.i18n.getMessage(trialMessageKey, [formatInteger(premiumAccess.remainingDays, uiLocale)]));
+    setPremiumStatus(chrome.i18n.getMessage(trialMessageKey, [
+      formatInteger(premiumAccess.remainingDays, uiLocale),
+      formatDate(premiumAccess.trialEnd, uiLocale)
+    ]));
     if (upgradeContainer) upgradeContainer.style.display = 'block';
   } else {
     setPremiumStatus(chrome.i18n.getMessage('trialExpired'), 'warning');
