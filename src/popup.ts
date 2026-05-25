@@ -30,6 +30,7 @@ const localize = () => {
     { id: 'onboarding-step-page', key: 'onboardingStepPage' },
     { id: 'onboarding-step-on-title', key: 'onboardingStepOnTitle' },
     { id: 'onboarding-step-on', key: 'onboardingStepOn' },
+    { id: 'onboarding-next-step', key: 'onboardingNextStep' },
     { id: 'onboarding-tip', key: 'onboardingTip' },
     { id: 'settings-title', key: 'settingsTitle' },
     { id: 'label-color', key: 'labelColor' },

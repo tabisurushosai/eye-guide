@@ -7,6 +7,7 @@
   "onboardingStepPage": { "message": "Open this popup from the tab where you want to use the reading line." },
   "onboardingStepOnTitle": { "message": "Select On to try it" },
   "onboardingStepOn": { "message": "You can adjust settings later. Select On below to start." },
+  "onboardingNextStep": { "message": "First step: select the On button below to get started." },
   "onboardingTip": { "message": "Tip: after it appears, the line follows your mouse. You can also move it in small steps with Shift+Alt+Up/Down." },
   "settingsTitle": { "message": "Reading line settings" },
   "labelColor": { "message": "Color" },

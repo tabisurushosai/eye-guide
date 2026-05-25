@@ -7,6 +7,7 @@
   "onboardingStepPage": { "message": "読書ラインを使いたいタブで、このポップアップを開きます。" },
   "onboardingStepOnTitle": { "message": "「オン」で試す" },
   "onboardingStepOn": { "message": "設定はあとから変えられます。まずは下の「オン」を押してください。" },
+  "onboardingNextStep": { "message": "最初の一歩: 下の「オン」を押すだけで始められます。" },
   "onboardingTip": { "message": "ワンポイント: 表示後のラインはマウス位置に追従し、Shift+Alt+↑/↓ キーでも少しずつ動かせます。" },
   "settingsTitle": { "message": "読書ライン設定" },
   "labelColor": { "message": "色" },
